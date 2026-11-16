@@ -1,0 +1,7 @@
+*.log
+*.db
+data/portal.db
+data/uploads/
+node_modules/
+_publish.txt
+_single_build.txt
