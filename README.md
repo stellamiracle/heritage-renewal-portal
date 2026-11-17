@@ -2,7 +2,7 @@
 
 面向遗产保护与城市更新领域的法规、政策、案例、动态汇编检索站点。
 
-- **在线站点**：<https://stellamiracle.github.io/heritage-renewal-portal/>
+- **在线站点（尚未上线，GitHub 仓库与 Pages 待发布）**：<https://stellamiracle.github.io/heritage-renewal-portal/>
 - **完整检索版**（含全文搜索与组合筛选）：<https://stellamiracle.github.io/heritage-renewal-portal/app/>
 - 单文件离线版：`publish/app/index.html`，双击即可打开，无需服务器与网络
 
