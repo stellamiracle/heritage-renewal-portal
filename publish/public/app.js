@@ -26,7 +26,7 @@
     form.addEventListener('submit', function (e) {
       e.preventDefault();
       var kw = $('[name=q]', form).value.trim();
-      location.href = '/browse?q=' + encodeURIComponent(kw);
+      location.href = 'browse/index.html?q=' + encodeURIComponent(kw);
     });
   }
 
