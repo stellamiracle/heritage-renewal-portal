@@ -41,7 +41,10 @@
   function hl(text, kw) {
     var plain = String(text == null ? '' : text);
     if (!kw) return esc(plain);
-    var k = norm(kw), low = plain.toLowerCase(), out = '', i = 0;
+    var raw = String(kw);
+    var low = plain.toLowerCase();
+    var k = low.indexOf(raw.toLowerCase()) >= 0 ? raw : norm(kw);
+    var out = '', i = 0;
     while (i < plain.length) {
       var idx = low.indexOf(k, i);
       if (idx < 0) { out += esc(plain.slice(i)); break; }
@@ -56,11 +59,41 @@
     '实施中': 'st-running', '动态': 'st-dyn',
     '实践报道': 'st-report', '入选典型案例': 'st-case'
   };
+  /* 规范化字符串 + 原文索引映射，用于把正文命中位置换算回原文偏移 */
+  function normMap(s) {
+    var low = String(s == null ? '' : s).toLowerCase();
+    var out = '', map = [];
+    for (var i = 0; i < low.length; i++) {
+      if (!/\s/.test(low[i])) { out += low[i]; map.push(i); }
+    }
+    return { s: out, map: map };
+  }
+  /* 关键词只命中正文（标题/摘要/主题里看不到）时，截一段正文并高亮，说明"为什么命中" */
+  function bodySnippet(e, kw) {
+    if (!kw) return '';
+    var body = String(e.body == null ? '' : e.body);
+    if (!body) return '';
+    var visible = [e.title, e.doc_no, e.issuer, e.summary,
+      (e.themes || []).join(' '), (e.tags || []).join(' ')].join(' ');
+    if (norm(visible).indexOf(norm(kw)) >= 0) return '';
+    var nm = normMap(body);
+    var k = norm(kw);
+    var idx = nm.s.indexOf(k);
+    if (idx < 0 || idx + k.length > nm.map.length) return '';
+    var start = nm.map[idx];
+    var end = nm.map[idx + k.length - 1] + 1;
+    var pad = 45;
+    var s0 = Math.max(0, start - pad);
+    var s1 = Math.min(body.length, end + pad);
+    var frag = body.slice(s0, s1).replace(/\s+/g, ' ');
+    return '<p class="snippet"><span class="snippet-label">正文命中</span>'
+      + (s0 > 0 ? '…' : '') + hl(frag, kw) + (s1 < body.length ? '…' : '') + '</p>';
+  }
   function card(e, kw) {
     var label = TYPE_LABEL[e.type] || e.type;
     var url = '../entry/' + (e.slug || e.id) + '.html';
     var chips = (e.themes || []).slice(0, 4).map(function (t) {
-      return '<span class="chip">' + esc(t) + '</span>';
+      return '<span class="chip">' + hl(t, kw) + '</span>';
     }).join('');
     var meta = (e.issuer || '') + (e.doc_no ? ' · ' + e.doc_no : '');
     var badge = e.status
@@ -72,7 +105,7 @@
       '<h3><a href="' + url + '">' + hl(e.title, kw) + '</a></h3>' +
       '<p class="meta">' + hl(meta, kw) + '</p>' +
       '<p class="summary">' + hl(e.summary || '', kw) + '</p>' +
-      (chips ? '<p class="chips">' + chips + '</p>' : '') + src + '</article>';
+      (chips ? '<p class="chips">' + chips + '</p>' : '') + bodySnippet(e, kw) + src + '</article>';
   }
   function ready(fn) {
     if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', fn);
@@ -106,7 +139,17 @@
       grid.innerHTML = out.length ? out.map(function (e) { return card(e, kw); }).join('')
         : '<p class="muted">没有符合条件的条目。可减少筛选条件，或换用关键词检索。</p>';
       var head = document.querySelector('.result-head p.muted');
-      if (head) head.textContent = '共 ' + out.length + ' 条' + (kw ? '（关键词：' + kw + '）' : '（客户端检索）');
+      if (head) {
+        var cond = [];
+        if (kw) cond.push('关键词：' + kw);
+        if (p.type) cond.push('类型：' + (TYPE_LABEL[p.type] || p.type));
+        if (p.level) cond.push('层级：' + p.level);
+        if (p.region) cond.push('地区：' + p.region);
+        if (p.theme) cond.push('主题：' + p.theme);
+        if (p.status) cond.push('效力状态：' + p.status);
+        if (p.from || p.to) cond.push('发布日期：' + (p.from || '不限') + ' 至 ' + (p.to || '不限'));
+        head.textContent = '共 ' + out.length + ' 条' + (cond.length ? '（' + cond.join(' · ') + '）' : '（客户端检索）');
+      }
       var q = form.querySelector("[name=q]");
       if (q && kw && !q.value) q.value = kw;
       var ty = form.querySelector("[name=type]");
