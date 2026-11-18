@@ -38,6 +38,7 @@ function rewrite(html) {
   s = s.replace(/href="\/browse"/g, 'href="/browse/index.html"');
   s = s.replace(/href="\/about"/g, 'href="/about/index.html"');
   s = s.replace(/href="\/guide"/g, 'href="/guide/index.html"');
+  s = s.replace(/href="\/map"/g, 'href="/map/index.html"');
   s = s.replace(/href="\/entry\/([^"?#]+)"/g,
     function (m, slug) { return 'href="/entry/' + slug + '.html"'; });
   s = s.replace(/href="\/"/g, 'href="/index.html"');
@@ -68,6 +69,41 @@ function main() {
     total: st.total, updated: latestDate(),
     facets: facets, themeCounts: facets.themeCounts || {}
   })));
+  /* 全球遗产地图：底图路径静态内嵌，点位数据单独输出供客户端筛选 */
+  const whRaw = JSON.parse(fs.readFileSync(path.join(BASE, 'data', 'wh_map.json'), 'utf8'));
+  /* 中文名叠加：wh_zh_names.json 为经核验的权威中文名，缺失时回退原名 */
+  let zhNames = {};
+  try { zhNames = JSON.parse(fs.readFileSync(path.join(BASE, 'data', 'wh_zh_names.json'), 'utf8')); } catch (e) { zhNames = {}; }
+  let zhApplied = 0;
+  const whById = new Map();
+  db.listEntries({ type: 'case', limit: 2000 }).forEach(function (e) {
+    if (e.wh_id) whById.set(String(e.wh_id), e.slug);
+  });
+  const whPts = whRaw.map(function (p) {
+    const c = String(p.c || '');
+    return {
+      id: p.id, n: (zhNames[p.id] && zhNames[p.id].n) ? zhNames[p.id].n : p.n, en: p.en, c: c, y: p.y, k: p.k, r: p.r, cr: p.cr, u: p.u,
+      la: p.la, lo: p.lo,
+      cn: c.indexOf('中国') >= 0 ? 1 : 0,
+      s: whById.get(String(p.id)) || ''
+    };
+  });
+  const mapStat = { total: whPts.length, cn: 0, cultural: 0, natural: 0, mixed: 0, linked: whById.size };
+  whPts.forEach(function (p) {
+    if (p.cn === 1) mapStat.cn += 1;
+    if (p.k === 'Cultural') mapStat.cultural += 1;
+    else if (p.k === 'Natural') mapStat.natural += 1;
+    else if (p.k === 'Mixed') mapStat.mixed += 1;
+  });
+  const cnSites = whPts.filter(function (p) { return p.cn === 1; })
+    .sort(function (a, b) { return String(b.y || '').localeCompare(String(a.y || '')) || String(a.n).localeCompare(String(b.n)); })
+    .map(function (p) { return { id: p.id, n: p.n, en: p.en, state: p.c, y: p.y, cat: p.k, s: p.s }; });
+  const basemap = JSON.parse(fs.readFileSync(path.join(BASE, 'data', 'world_paths.json'), 'utf8'));
+  write('map/index.html', rewrite(views.mapPage({ basemap: basemap, stats: mapStat, cnSites: cnSites, updated: latestDate(), total: st.total })));
+  write('data/wh_map.json', JSON.stringify(whPts));
+  whPts.forEach(function (p) { if (zhNames[p.id] && zhNames[p.id].n === p.n) zhApplied++; });
+  mapStat.zh = zhApplied;
+  console.log('map build: points=' + whPts.length + ' cn=' + mapStat.cn + ' linked_cases=' + mapStat.linked + ' zh_names=' + zhApplied);
   const per = 20;
   const total = db.countEntries({ limit: 2000 });
   const pages = Math.max(1, Math.ceil(total / per));
@@ -103,6 +139,10 @@ function main() {
     path.join(DIST, 'public', 'style.css'));
   fs.copyFileSync(path.join(BASE, 'public', 'app.js'),
     path.join(DIST, 'public', 'app.js'));
+  fs.copyFileSync(path.join(BASE, 'public', 'map.js'),
+    path.join(DIST, 'public', 'map.js'));
+  fs.copyFileSync(path.join(BASE, 'public', 'map.css'),
+    path.join(DIST, 'public', 'map.css'));
   write('robots.txt', 'User-agent: *' + String.fromCharCode(10) +
     'Allow: /' + String.fromCharCode(10));
   console.log('static build done: pages=' + pages +

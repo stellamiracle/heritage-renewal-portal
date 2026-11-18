@@ -48,7 +48,7 @@ let entries = [];
 try {
   entries = JSON.parse(read(path.join(PUB, "data", "entries.json"))).entries || [];
 } catch (e) { console.log("WARN entries.json 解析失败: " + e.message); }
-const urls = ["/", "/browse/index.html", "/guide/index.html", "/about/index.html"].concat(
+const urls = ["/", "/browse/index.html", "/guide/index.html", "/about/index.html", "/map/index.html"].concat(
   entries.map(function (e) { return "/entry/" + (e.slug || e.id) + ".html"; }));
 const today = new Date().toISOString().slice(0, 10);
 const xml = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" + NL

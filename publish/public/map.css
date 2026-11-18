@@ -1,0 +1,58 @@
+/* 全球遗产地图页专用样式 */
+.map-head { max-width: 900px; margin: 0 auto 34px; }
+.stat-map { display: flex; flex-wrap: wrap; gap: 0; margin: 18px 0 0; padding: 0; list-style: none; border-top: 1px solid var(--line); }
+.stat-map li { flex: 1 1 110px; padding: 12px 14px; border-right: 1px solid var(--line); }
+.stat-map li:last-child { border-right: 0; }
+.stat-map b { display: block; font-family: var(--serif); font-size: 24px; color: var(--ink); }
+.stat-map span { font-size: 12px; color: var(--muted); }
+.map-section { margin-bottom: 40px; }
+.map-controls { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; margin-bottom: 14px; }
+.map-controls input[type=search], .map-controls select {
+  font-family: inherit; font-size: 13px; padding: 8px 10px;
+  border: 1px solid var(--line); border-radius: 4px; background: #fff; color: var(--ink);
+}
+.map-controls input[type=search] { min-width: 240px; flex: 1 1 240px; }
+.wh-check { font-size: 13px; color: var(--muted); display: inline-flex; align-items: center; gap: 6px; }
+.wh-count { margin-left: auto; font-size: 12px; color: var(--muted); }
+.map-frame { position: relative; background: #f6f2e9; border: 1px solid var(--line); border-radius: 6px; padding: 10px; }
+#wh-svg { width: 100%; height: auto; display: block; }
+#wh-svg .grat line { stroke: #d9d0bd; stroke-width: 0.4; }
+#wh-svg .land { fill: #ece5d6; stroke: #c9bda4; stroke-width: 0.35; }
+#wh-svg .pt-c { fill: #9c3b2b; }
+#wh-svg .pt-n { fill: #2f6b52; }
+#wh-svg .pt-m { fill: #b8860b; }
+#wh-svg circle { cursor: pointer; pointer-events: all; }
+#wh-svg circle:hover { stroke: #1a1a1a; stroke-width: 0.6; }
+#wh-svg circle.pt-sel { stroke: #1a1a1a; stroke-width: 0.8; }
+.wh-tip {
+  position: fixed; z-index: 40; max-width: 260px; background: #fffdf8;
+  border: 1px solid var(--ink); border-radius: 4px; padding: 9px 11px;
+  font-size: 12px; line-height: 1.55; color: var(--ink);
+  box-shadow: 0 6px 18px rgba(0,0,0,.14);
+}
+.wh-tip b { display: block; font-family: var(--serif); font-size: 14px; margin-bottom: 2px; }
+.wh-tip .tip-en { display: block; color: var(--muted); font-style: italic; margin-bottom: 4px; }
+.wh-tip .tip-line { display: block; color: var(--muted); }
+.wh-tip .tip-link { display: block; margin-top: 5px; color: var(--accent); }
+.wh-legend { display: flex; flex-wrap: wrap; gap: 16px; align-items: center; margin: 12px 0 0; font-size: 12px; color: var(--muted); }
+.lg::before { content: ''; display: inline-block; width: 9px; height: 9px; border-radius: 50%; margin-right: 6px; vertical-align: middle; }
+.lg-c::before { background: #9c3b2b; }
+.lg-n::before { background: #2f6b52; }
+.lg-m::before { background: #b8860b; }
+.lg-note { margin-left: auto; }
+.wh-src { font-size: 12px; color: var(--muted); margin-top: 10px; line-height: 1.7; }
+.wh-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); }
+.wh-site {
+  display: block; width: 100%; text-align: left; font-family: inherit; background: #fff;
+  border: 1px solid var(--line); border-radius: 4px; padding: 10px 12px; cursor: pointer;
+}
+.wh-site:hover, .wh-site.on { border-color: var(--accent); }
+.wh-site b { display: block; font-family: var(--serif); font-size: 14px; color: var(--ink); }
+.wh-site-en { display: block; font-size: 11px; font-style: italic; color: var(--muted); margin-top: 1px; }
+.wh-site-meta { display: block; font-size: 12px; color: var(--muted); margin-top: 2px; }
+.wh-site-link { display: inline-block; margin-top: 6px; font-size: 12px; color: var(--accent); }
+@media (max-width: 760px) {
+  .stat-map li { flex: 1 1 46%; border-bottom: 1px solid var(--line); }
+  .map-controls input[type=search] { min-width: 0; }
+  .wh-count { margin-left: 0; }
+}

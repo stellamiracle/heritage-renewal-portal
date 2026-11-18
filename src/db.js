@@ -53,6 +53,13 @@ CREATE INDEX IF NOT EXISTS idx_entries_type ON entries(type);
 CREATE INDEX IF NOT EXISTS idx_entries_date ON entries(publish_date DESC);
 CREATE INDEX IF NOT EXISTS idx_inbox_status ON inbox(status);
 `);
+/* 地理字段迁移：全球遗产地图需要坐标与名录编号（只增不改，向后兼容） */
+(() => {
+  const cols = db.prepare('PRAGMA table_info(entries)').all().map(r => r.name);
+  if (cols.indexOf('lat') < 0) db.exec('ALTER TABLE entries ADD COLUMN lat REAL');
+  if (cols.indexOf('lon') < 0) db.exec('ALTER TABLE entries ADD COLUMN lon REAL');
+  if (cols.indexOf('wh_id') < 0) db.exec('ALTER TABLE entries ADD COLUMN wh_id TEXT');
+})();
 
 const nowISO = () => new Date().toISOString();
 const j = (v) => { try { return JSON.stringify(v || []); } catch { return '[]'; } };
@@ -138,26 +145,32 @@ function upsertEntry(data, id = null) {
     source_name: data.source_name || '', source_url: data.source_url || '',
     attachments: j(data.attachments), featured: b(data.featured),
     visibility: data.visibility || 'public', author: data.author || '',
+    lat: data.lat == null || data.lat === '' ? null : Number(data.lat),
+    lon: data.lon == null || data.lon === '' ? null : Number(data.lon),
+    wh_id: data.wh_id || '',
   };
   if (id) {
     db.prepare(`UPDATE entries SET slug=?, type=?, title=?, doc_no=?, issuer=?, level=?, region=?,
       publish_date=?, effective_date=?, status=?, themes=?, tags=?, summary=?, body=?,
-      source_name=?, source_url=?, attachments=?, featured=?, visibility=?, author=?, updated_at=?
+      source_name=?, source_url=?, attachments=?, featured=?, visibility=?, author=?,
+      lat=?, lon=?, wh_id=?, updated_at=?
       WHERE id=?`).run(
       payload.slug, payload.type, payload.title, payload.doc_no, payload.issuer, payload.level,
       payload.region, payload.publish_date, payload.effective_date, payload.status, payload.themes,
       payload.tags, payload.summary, payload.body, payload.source_name, payload.source_url,
-      payload.attachments, payload.featured, payload.visibility, payload.author, ts, id);
+      payload.attachments, payload.featured, payload.visibility, payload.author,
+      payload.lat, payload.lon, payload.wh_id, ts, id);
     return getEntry(id);
   }
   const st = db.prepare(`INSERT INTO entries (slug,type,title,doc_no,issuer,level,region,publish_date,
     effective_date,status,themes,tags,summary,body,source_name,source_url,attachments,featured,
-    visibility,author,created_at,updated_at)
-    VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`);
+    visibility,author,lat,lon,wh_id,created_at,updated_at)
+    VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`);
   const info = st.run(payload.slug, payload.type, payload.title, payload.doc_no, payload.issuer,
     payload.level, payload.region, payload.publish_date, payload.effective_date, payload.status,
     payload.themes, payload.tags, payload.summary, payload.body, payload.source_name, payload.source_url,
-    payload.attachments, payload.featured, payload.visibility, payload.author, ts, ts);
+    payload.attachments, payload.featured, payload.visibility, payload.author,
+    payload.lat, payload.lon, payload.wh_id, ts, ts);
   return getEntry(Number(info.lastInsertRowid));
 }
 

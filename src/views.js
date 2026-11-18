@@ -1,5 +1,6 @@
 'use strict';
 const md = require('./md');
+const mapMod = require('./views_map.js');
 const E = md.escapeHtml;
 const NL = String.fromCharCode(10);
 
@@ -10,6 +11,7 @@ function nav(current) {
     ['/', '首页', 'home'],
     ['/browse', '资料检索', 'browse'],
     ['/guide', '研究导览', 'guide'],
+    ['/map', '全球遗产', 'map'],
     ['/about', '关于本站', 'about']
   ];
   return items.map(function (it) {
@@ -105,24 +107,30 @@ function optionList(list, cur, allLabel) {
   return s;
 }
 const MODULES = [
-  { key: 'regulation', title: '中国法规与政策库',
+  { keys: ['regulation', 'policy'], href: '/browse',
+    title: '中国法规与政策库',
     desc: '国家法律、行政法规、部门规章与地方政策，按行政层级、地区、主题、效力状态与发布时间区间检索。',
     live: 'live', stateLabel: '已上线' },
-  { key: 'case', title: '遗产与更新案例库',
+  { keys: ['case'], href: '/browse?type=case',
+    title: '遗产与更新案例库',
     desc: '统一案例档案：原始功能、更新功能、遗产类型、保护策略、更新模式与实施成效，逐条核验后入库。',
     live: 'partial', stateLabel: '部分上线' },
-  { key: 'news', title: '行业动态',
+  { keys: ['news'], href: '/browse?type=news',
+    title: '行业动态',
     desc: '官方发布与实施进展的持续跟踪，标注来源机构、发布日期、所属地区与主题标签。',
     live: 'partial', stateLabel: '部分上线' },
-  { key: null, title: '专题研究与主题导航',
+  { keys: [], href: '/guide',
+    title: '专题研究与主题导航',
     desc: '以主题标签串联跨类型资料，形成可检索、可对比、可回溯原文的研究专题入口。',
     live: 'live', stateLabel: '已上线' },
-  { key: null, title: 'AI 智能研究助手',
-    desc: '面向公众的受控问答：只依据站内已核验资料作答，关键结论回溯到具体条目与官方原文链接。',
+  { keys: [], href: null,
+    title: 'AI 智能研究助手',
+    desc: '由独立后端统一完成身份校验、频率与额度控制后调用模型，只依据站内已核验资料作答，关键结论回溯到具体条目与官方原文链接。',
     live: 'plan', stateLabel: '建设中' },
-  { key: null, title: '全球遗产与更新地图',
-    desc: '案例项目的空间可视化与跨国对比，按国家、城市、遗产类型与更新模式筛选。',
-    live: 'plan', stateLabel: '规划中' }
+  { keys: [], href: '/map',
+    title: '全球遗产与更新地图',
+    desc: '以联合国教科文组织《世界遗产名录》为底账，遗产地按名录坐标可视化，可按遗产类型、所属区域与国别筛选，并回溯站内案例档案与官方页面。',
+    live: 'live', stateLabel: '已上线' }
 ];
 
 const GUIDE_QUERIES = [
@@ -153,13 +161,17 @@ function homePage(d) {
   const hot = (d.hot || []).map(card).join('');
   const mods = MODULES.map(function (m, i) {
     const no = ('0' + (i + 1)).slice(-2);
-    const cnt = m.key ? (bt[m.key] || 0) : 0;
-    return '<div class="module">' +
+    const cnt = (m.keys || []).reduce(function (s, k) { return s + (bt[k] || 0); }, 0);
+    const inner =
       '<span class="module-no">' + no + '</span>' +
       '<h3>' + E(m.title) + '</h3>' +
       '<p class="module-desc">' + E(m.desc) + '</p>' +
       '<p class="module-foot"><span class="mstate mstate-' + m.live + '">' + E(m.stateLabel) + '</span>' +
-      (cnt ? '<span class="mcount">' + cnt + ' 条</span>' : '') + '</p></div>';
+      (cnt ? '<span class="mcount">' + cnt + ' 条</span>' : '') +
+      (m.href ? '<span class="module-go">进入 →</span>' : '') + '</p>';
+    return m.href
+      ? '<a class="module module-link" href="' + E(m.href) + '">' + inner + '</a>'
+      : '<div class="module module-static">' + inner + '</div>';
   }).join('');
   const guide = GUIDE_QUERIES.map(function (g) {
     return '<a class="guide-q" href="/browse?q=' + encodeURIComponent(g[0]) + '">' +
@@ -194,7 +206,7 @@ function homePage(d) {
   '</section>',
   '<section>',
   '<h2 class="section-title"><span class="sec-no">01</span>平台模块</h2>',
-  '<p class="section-lede">平台按六个模块推进建设。标注「已上线」的模块已对外开放，「建设中」与「规划中」的模块说明能力边界，不做未上线功能的承诺。</p>',
+  '<p class="section-lede">平台按六个模块推进建设。标注「已上线」「部分上线」的模块可直接点击进入对应内容，「建设中」的模块说明建设方向，暂不提供功能入口。</p>',
   '<div class="module-grid">' + mods + '</div>',
   '</section>',
   '<section>',
@@ -379,7 +391,9 @@ function aboutPage(d) {
   '<section class="prose">',
   '<h2>一、平台定位</h2>',
   '<p>本站面向遗产保护与城市更新领域，设立 <b>法规</b>、<b>政策</b>、<b>案例</b>、<b>动态</b> 四个板块，目标是提供一套 <b>可信、可检索、可追溯原始出处</b> 的专业知识库，而不是一个以生成内容为主的问答工具。</p>',
-  '<p>平台按六个模块推进建设，其中法规政策库、案例库、动态、专题导航四个模块已对外开放；AI 智能研究助手与全球遗产地图处于建设与规划阶段，本站不提供尚不可用的功能入口。</p>',
+  '<p>平台按六个模块推进建设，其中法规政策库、案例库、动态、专题导航四个模块已对外开放，可直接点击进入对应内容；AI 智能研究助手与全球遗产地图已进入建设阶段，本站不提供尚未建成的功能入口。</p>',
+  '<p><b>面向公众的访问方式</b>（建设中）：公众访问由独立的网站后端承担，后端统一负责身份识别、请求频率、额度控制与安全校验；法规、政策、案例与动态均通过数据库直查检索，来源、效力与原文链接逐条人工核验后公开。</p>',
+  '<p><b>智能问答的接入方式</b>：站内 AI 研究助手由后端通过专门的 AI 服务接口调用模型，访客不直接创建后台会话，也不直接调用后台网关或模型；模型仅依据站内已核验资料作答，关键结论回溯到具体条目与官方原文链接。</p>',
   '<h2>二、收录范围</h2>',
   '<p>收录对象以中央与地方机关公开发布的正式文本为主，每条记录均标注发布机关、发布日期、文号（如有）、行政层级、适用地区、效力状态与官方原文链接。案例与动态另按统一档案字段建档。</p>',
   '<h2>三、数据来源</h2>',
@@ -414,8 +428,8 @@ function aboutPage(d) {
   '<p>第一阶段本站为只读资料库，<b>不提供</b>用户上传文件、公开评论、用户发布内容与 AI 自动发布资讯等功能，以控制内容合规风险。</p>',
   '<h2>九、建设路线</h2>',
   '<ul><li><b>第一阶段</b>：法规政策库、案例库、动态、主题专题检索与公开访问（当前）</li>',
-  '<li><b>第二阶段</b>：案例档案字段完善、动态国际化、条款级检索、专题对比研究</li>',
-  '<li><b>第三阶段</b>：AI 研究助手、全球案例地图、开放数据接口与多端入口</li></ul>',
+  '<li><b>第二阶段</b>：独立后端与数据库直查检索、AI 研究助手（后端直连模型服务）、全球遗产与更新地图、案例档案字段完善与动态国际化</li>',
+  '<li><b>第三阶段</b>：条款级检索与专题对比研究、开放数据接口与多端入口（微信小程序、移动应用）</li></ul>',
   '</section>',
   ].join(NL);
   return layout({ title: '关于本站 · 遗产保护与城市更新观察平台', body: body, current: 'about', total: d.total, updated: d.updated });
@@ -676,6 +690,7 @@ module.exports = {
   detailPage: detailPage,
   aboutPage: aboutPage,
   guidePage: guidePage,
+  mapPage: function (d) { return mapMod.mapPage(d, layout); },
   adminShell: adminShell,
   loginPage: loginPage,
   dashboardPage: dashboardPage,
