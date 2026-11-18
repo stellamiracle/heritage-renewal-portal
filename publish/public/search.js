@@ -50,6 +50,12 @@
     }
     return out;
   }
+  var STATUS_CLASS = {
+    '现行有效': 'st-valid',
+    '失效': 'st-void', '已废止': 'st-void', '已失效': 'st-void', '废止': 'st-void',
+    '实施中': 'st-running', '动态': 'st-dyn',
+    '实践报道': 'st-report', '入选典型案例': 'st-case'
+  };
   function card(e, kw) {
     var label = TYPE_LABEL[e.type] || e.type;
     var url = '../entry/' + (e.slug || e.id) + '.html';
@@ -57,12 +63,16 @@
       return '<span class="chip">' + esc(t) + '</span>';
     }).join('');
     var meta = (e.issuer || '') + (e.doc_no ? ' · ' + e.doc_no : '');
+    var badge = e.status
+      ? '<span class="badge ' + (STATUS_CLASS[e.status] || 'st-other') + '">' + esc(e.status) + '</span>'
+      : '';
+    var src = e.source_name ? '<p class="src">来源：' + esc(e.source_name) + '</p>' : '';
     return '<article class="card"><div class="card-top"><span class="tag tag-' + esc(e.type) + '">' + esc(label) +
-      '</span><time>' + esc(e.publish_date || '') + '</time></div>' +
+      '</span>' + badge + '<time>' + esc(e.publish_date || '') + '</time></div>' +
       '<h3><a href="' + url + '">' + hl(e.title, kw) + '</a></h3>' +
       '<p class="meta">' + hl(meta, kw) + '</p>' +
       '<p class="summary">' + hl(e.summary || '', kw) + '</p>' +
-      (chips ? '<p class="chips">' + chips + '</p>' : '') + '</article>';
+      (chips ? '<p class="chips">' + chips + '</p>' : '') + src + '</article>';
   }
   function ready(fn) {
     if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', fn);
@@ -105,6 +115,9 @@
         var el = form.querySelector('[name=' + n + ']');
         if (el && p[n] && !el.value) el.value = p[n];
       });
+      /* 客户端检索一次性给出全部命中，静态分页器不再适用 */
+      var pager = document.querySelector('.pager');
+      if (pager && pager.parentNode) pager.parentNode.removeChild(pager);
       var tabs = document.querySelectorAll('.tabs .tab');
       Array.prototype.forEach.call(tabs, function (a) {
         var type = TYPE_BY_LABEL[(a.textContent || '').trim()];
