@@ -26,7 +26,7 @@ function mapPage(d, layout) {
       (x.en && x.en !== x.n ? '<span class="wh-site-en">' + E(x.en) + '</span>' : '') +
       '<span class="wh-site-meta">' + E(x.state || '') +
       (x.y ? ' · ' + E(x.y) + ' 年列入' : '') + ' · ' + E(CATCN[x.cat] || x.cat || '') + '</span>' +
-      (x.s ? '<a class="wh-site-link" href="/entry/' + E(x.s) + '.html">站内案例档案 →</a>' : '') +
+      (x.s ? '<a class="wh-site-link" href="/entry/' + E(x.s) + '">站内案例档案 →</a>' : '') +
       '</div></li>';
   }).join('');
   const body = [
