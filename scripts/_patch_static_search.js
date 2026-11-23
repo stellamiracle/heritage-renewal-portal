@@ -48,8 +48,13 @@ let entries = [];
 try {
   entries = JSON.parse(read(path.join(PUB, "data", "entries.json"))).entries || [];
 } catch (e) { console.log("WARN entries.json 解析失败: " + e.message); }
-const urls = ["/", "/browse/index.html", "/guide/index.html", "/about/index.html", "/map/index.html"].concat(
-  entries.map(function (e) { return "/entry/" + (e.slug || e.id) + ".html"; }));
+let events = [];
+try {
+  events = JSON.parse(read(path.join(PUB, "data", "events.json"))).events || [];
+} catch (e) { console.log("WARN events.json 解析失败: " + e.message); }
+const urls = ["/", "/browse/index.html", "/guide/index.html", "/about/index.html", "/map/index.html", "/events/index.html"].concat(
+  entries.map(function (e) { return "/entry/" + (e.slug || e.id) + ".html"; }),
+  events.map(function (e) { return "/events/" + e.slug + ".html"; }));
 const today = new Date().toISOString().slice(0, 10);
 const xml = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" + NL
   + "<urlset xmlns=\"http://www.sitemaps.org/schemas/sitemap/0.9\">" + NL

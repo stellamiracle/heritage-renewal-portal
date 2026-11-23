@@ -1,6 +1,7 @@
 'use strict';
 const md = require('./md');
 const mapMod = require('./views_map.js');
+const evMod = require('./views_events.js');
 const E = md.escapeHtml;
 const NL = String.fromCharCode(10);
 
@@ -10,6 +11,7 @@ function nav(current) {
   const items = [
     ['/', '首页', 'home'],
     ['/browse', '资料检索', 'browse'],
+    ['/events', '行业活动', 'events'],
     ['/guide', '研究导览', 'guide'],
     ['/map', '全球遗产', 'map'],
     ['/about', '关于本站', 'about']
@@ -119,6 +121,10 @@ const MODULES = [
     title: '行业动态',
     desc: '官方发布与实施进展的持续跟踪，标注来源机构、发布日期、所属地区与主题标签。',
     live: 'partial', stateLabel: '部分上线' },
+  { keys: [], href: '/events', countKey: 'event',
+    title: '行业活动与培训',
+    desc: '学术会议、行业论坛与专题峰会、工作坊与现场调研、专业培训与继续教育、展览与行业交流的时间地点档案，标注主办机构、参与方式与官方来源链接。',
+    live: 'live', stateLabel: '已上线' },
   { keys: [], href: '/guide',
     title: '专题研究与主题导航',
     desc: '以主题标签串联跨类型资料，形成可检索、可对比、可回溯原文的研究专题入口。',
@@ -161,7 +167,9 @@ function homePage(d) {
   const hot = (d.hot || []).map(card).join('');
   const mods = MODULES.map(function (m, i) {
     const no = ('0' + (i + 1)).slice(-2);
-    const cnt = (m.keys || []).reduce(function (s, k) { return s + (bt[k] || 0); }, 0);
+    const cnt = m.countKey === 'event'
+      ? (d.stats.events || 0)
+      : (m.keys || []).reduce(function (s, k) { return s + (bt[k] || 0); }, 0);
     const inner =
       '<span class="module-no">' + no + '</span>' +
       '<h3>' + E(m.title) + '</h3>' +
@@ -691,6 +699,8 @@ module.exports = {
   aboutPage: aboutPage,
   guidePage: guidePage,
   mapPage: function (d) { return mapMod.mapPage(d, layout); },
+  eventsIndexPage: function (d) { return evMod.eventsIndexPage(d, layout); },
+  eventDetailPage: function (d) { return evMod.eventDetailPage(d, layout); },
   adminShell: adminShell,
   loginPage: loginPage,
   dashboardPage: dashboardPage,

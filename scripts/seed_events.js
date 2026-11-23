@@ -1,0 +1,221 @@
+'use strict';
+/* 行业活动与培训：10 条候选活动入库（官方来源逐条取证，人工核验后入库）
+   幂等：按 slug upsert；入库前自动备份数据库 */
+const fs = require('fs');
+const path = require('path');
+const ROOT = path.join(__dirname, '..');
+const evdb = require('../src/db_events.js');
+
+const EVENTS = [
+{
+  slug: 'ev-summit-2027',
+  name: '欧洲文化遗产峰会 2027',
+  name_en: 'European Cultural Heritage Summit 2027',
+  type: '国际学术会议',
+  topics: ['文化遗产', '历史建筑', '文化传承'],
+  format: '线下会议',
+  start_date: '2027-06-06', end_date: '2027-06-09',
+  country: '波兰', city: '克拉科夫', region: '欧洲', venue: '',
+  organizer: 'Europa Nostra（欧洲遗产协会）',
+  co_organizer: '国际文化中心（ICC，波兰主办方）',
+  series: '欧洲文化遗产峰会',
+  summary: '由 Europa Nostra 主办、波兰国际文化中心（ICC）作为本地主办方承办的欧洲文化遗产年度峰会，2027 年 6 月 6 日至 9 日在波兰克拉科夫举行，并获欧盟与波兰文化和国家遗产部支持。峰会聚焦欧洲文化遗产保护与利用的政策合作与专业交流。',
+  evidence: 'The European Cultural Heritage Summit 2027 will be held from 6 to 9 June in Krakow, Poland. Organised by Europa Nostra in collaboration with the International Cultural Centre (ICC) as the Polish host, the Summit is supported by the European Union and the Ministry of Culture and National Heritage of Poland.',
+  source_name: 'Europa Nostra 官方活动页',
+  source_url: 'https://www.europanostra.org/events/european-cultural-heritage-summit-2027/'
+},
+{
+  slug: 'ev-rome70-2027',
+  name: '《罗马条约》70 周年纪念活动',
+  name_en: '70th Anniversary of the Treaties of Rome',
+  type: '国际纪念活动',
+  topics: ['文化遗产', '历史文化保护'],
+  format: '线下会议',
+  start_date: '2027-03-17', end_date: '2027-03-21',
+  country: '意大利', city: '罗马', region: '欧洲', venue: '',
+  organizer: 'Europa Nostra（欧洲遗产协会）',
+  co_organizer: '',
+  series: '',
+  summary: '2027 年 3 月 17 日至 21 日在罗马举行《罗马条约》签署 70 周年纪念活动。其中 3 月 18 日至 19 日为欧盟国家元首和政府首脑峰会，3 月 20 日举行“欧洲大游行”。Europa Nostra 作为联合文化遗产机构参与该系列纪念活动。',
+  evidence: 'The celebration of the 70th anniversary of the Treaties of Rome will take place from 17 to 21 March 2027, with the European Summit of the EU Heads of State and Government taking place on 18-19 March, and a March for Europe taking place on 20 March. Europa Nostra will contribute to this Jubilee with a series of events.',
+  source_name: 'Europa Nostra 官方活动页',
+  source_url: 'https://www.europanostra.org/events/70th-anniversary-of-the-treaties-of-rome-from-17-to-21-march-2027/'
+},
+{
+  slug: 'ev-terra-2027',
+  name: '第14届世界土建筑大会（Terra Congress 2027）',
+  name_en: '14th World Congress on Earthen Architecture - Terra Congress',
+  type: '国际学术会议',
+  topics: ['文化遗产', '历史建筑', '文物保护'],
+  format: '线下会议',
+  start_date: '2027-04-19', end_date: '2027-04-22',
+  country: '阿联酋', city: '艾因（Al Ain）', region: '中东', venue: '',
+  organizer: 'ICOMOS ISCEAH（土建筑遗产国际科学委员会）',
+  co_organizer: '阿布扎比文化与旅游部（Department of Culture and Tourism - Abu Dhabi）',
+  series: 'Terra Congress',
+  summary: '第14届世界土建筑大会定于 2027 年 4 月 19 日至 22 日在阿联酋艾因举行。原定 2026 年，因区域空域波动与国际参与组织方面的运行和后勤原因延期至 2027 年 4 月。大会主题为“Managing Change in Earthen Cultural Landscapes”，设置土建筑遗产与技艺传承、土建筑文化景观保护、土建筑创新等议题，并配套海报、数字材料、边会和实地活动。',
+  evidence: 'The 14th World Congress on Earthen Architecture, Terra Congress, will take place from 19-22 April 2027 in Al Ain, United Arab Emirates (UAE). Initially planned for 2026, it was postponed to April 2027 due to operational and logistical reasons linked to regional airspace volatility and international participation. Organised by ICOMOS ISCEAH (International Scientific Committee on Earthen Architectural Heritage) and the Department of Culture and Tourism-Abu Dhabi, it explores the theme "Managing Change in Earthen Cultural Landscapes".',
+  source_name: 'ICOMOS 官方活动页',
+  source_url: 'https://www.icomos.org/event/terra-congress-2027/'
+},
+{
+  slug: 'ev-ticcih-medellin-2027',
+  name: '第11届拉丁美洲工业遗产保护学术讨论会暨 TICCIH 美洲区第一届区域大会',
+  name_en: '11th Latin American Colloquium on the Conservation of the Industrial Heritage & 1st TICCIH Regional Congress for the Americas',
+  type: '国际学术会议',
+  topics: ['工业遗产', '老旧厂房改造', '文化遗产'],
+  format: '线下会议',
+  start_date: '2027-03-17', end_date: '2027-03-19',
+  country: '哥伦比亚', city: '麦德林（Medellin）', region: '拉丁美洲',
+  venue: '麦德林校区矿业学院（Facultad de Minas, Universidad Nacional de Colombia）',
+  organizer: 'TICCIH（工业遗产保护国际委员会）',
+  co_organizer: '拉丁美洲工业遗产保护学术讨论会（Latin American Colloquium on the Conservation of the Industrial Heritage）组委会',
+  series: 'TICCIH 区域大会',
+  summary: '第11届拉丁美洲工业遗产保护学术讨论会与 TICCIH 美洲区第一届区域大会于 2027 年 3 月 17 日至 19 日在哥伦比亚国立大学麦德林校区矿业学院举行，征集论文并设置全会与区域议题。',
+  evidence: 'taking place 17-19 March 2027 at the Faculty of Mines (Facultad de Minas), Universidad Nacional de Colombia, Medellin Campus, Colombia. Full details of the Colloquium and Congress are outlined in the Call for Papers.',
+  source_name: 'TICCIH 官方会议页',
+  source_url: 'https://ticcih.org/medellin2027/'
+},
+{
+  slug: 'ev-ncha-agm-2026',
+  name: '中国古迹遗址保护协会2026年度会员代表大会',
+  name_en: 'ICOMOS China 2026 Annual General Meeting',
+  type: '协会年会',
+  topics: ['文化遗产保护传承', '文物保护', '历史建筑'],
+  format: '线下会议',
+  start_date: '2026-11-14', end_date: '2026-11-14',
+  country: '中国', city: '江西庐山', region: '中国', venue: '江西庐山',
+  organizer: '中国古迹遗址保护协会、江西省文物局',
+  co_organizer: '九江市文化广电旅游局、庐山市人民政府（庐山风景名胜区管理局）',
+  series: 'ICOMOS China 年度会员代表大会',
+  summary: '中国古迹遗址保护协会2026年度会员代表大会于 2026 年 11 月 14 日在江西庐山开幕，协会理事及会员代表 200 余名出席。大会审议通过 2026 年度工作报告，增补 5 名理事，并围绕“文化遗产：活态性、时代性、人民性”开展学术研讨。',
+  evidence: '11月14日，中国古迹遗址保护协会2026年度会员代表大会在江西庐山开幕。会议由中国古迹遗址保护协会、江西省文物局主办，九江市文化广电旅游局、庐山市人民政府（庐山风景名胜区管理局）承办。协会理事及会员代表200余名出席会议……大会围绕“文化遗产：活态性、时代性、人民性”开展学术研讨。',
+  source_name: '国家文物局官网',
+  source_url: 'http://www.ncha.gov.cn/art/2026/11/19/art_723_205857.html'
+},
+{
+  slug: 'ev-macao-training-2026',
+  name: '2026亚太地区古建筑保护与修复技术高级人才研修班',
+  name_en: '2026 Asia-Pacific Advanced Training Course on Ancient Architecture Conservation and Restoration',
+  type: '专业培训',
+  topics: ['历史建筑', '修缮工程', '文化遗产'],
+  format: '线下培训',
+  start_date: '2026-11-17', end_date: '',
+  country: '中国', city: '澳门', region: '中国', venue: '澳门大学科研大楼',
+  organizer: '联合国教科文组织东亚地区办事处、文化体育局、苏州市园林和绿化管理局、联合国教科文组织亚太地区世界遗产培训与研究中心苏州分中心',
+  co_organizer: '澳门故宫文化遗产保护传承中心（承办）；澳门大学、蘇州市社科成果转移转化中心（协办）'.replace('蘇', '苏'),
+  series: '亚太地区世界遗产培训与研究中心研修班',
+  summary: '“2026亚太地区古建筑保护与修复技术高级人才研修班”于 2026 年 11 月 17 日在澳门大学科研大楼开班，内容包括展览与课程培训，以澳门历史城区保护实践为重点案例，围绕多元文化背景下历史城区整体性保护、传统建筑保护修复、遗产保护治理、社区活态延续与城市可持续发展等议题展开交流。',
+  evidence: '由联合国教科文组织东亚地区办事处、文化体育局、苏州市园林和绿化管理局、联合国教科文组织亚太地区世界遗产培训与研究中心苏州分中心联合主办，澳门故宫文化遗产保护传承中心承办，澳门大学及苏州市社科成果转移转化中心协办的“2026亚太地区古建筑保护与修复技术高级人才研修班”，于11月17日在澳门大学科研大楼开班。',
+  source_name: '澳门特别行政区政府网站（文化体育局稿）',
+  source_url: 'https://www.gov.mo/zh-hant/news/1283524/'
+},
+{
+  slug: 'ev-changan-forum-2026',
+  name: '2026年城市规划·长安论坛',
+  name_en: '2026 Urban Planning Changan Forum',
+  type: '行业论坛',
+  topics: ['城市更新', '国土空间规划', '绿色低碳'],
+  format: '线下会议',
+  start_date: '2026-09-19', end_date: '2026-09-19',
+  country: '中国', city: '西安', region: '中国', venue: '西安建筑科技大学',
+  organizer: '中国城市规划学会、西安建筑科技大学',
+  co_organizer: '',
+  series: '城市规划·长安论坛',
+  summary: '由中国城市规划学会与西安建筑科技大学联合主办的“2026年城市规划·长安论坛”于 2026 年 9 月 19 日在西安建筑科技大学举行，主题为“新质赋能，规划赋新”，上午为开幕式与大会主旨报告，下午设平行论坛，议题涵盖可持续城市更新、数智生活与城市空间、低空经济与城乡规划、新能源发展与空间规划、规划教育教学创新。',
+  evidence: '本次论坛由中国城市规划学会和西安建筑科技大学联合主办。……三、会议时间 2026年9月19日（星期六）·上午开幕式、大会主旨报告 ·下午平行论坛 四、会议地点 西安建筑科技大学',
+  source_name: '中国城市规划网（学会通知公告）',
+  source_url: 'https://www.planning.org.cn/solicity/view?id=2795'
+},
+{
+  slug: 'ev-renew-symposium-2026',
+  name: '城市更新与现代化人民城市学术研讨会暨2026年中国城市规划学会城市更新分会年会',
+  name_en: 'Urban Renewal and Modern People-oriented City Academic Symposium & 2026 Annual Meeting of the Urban Renewal Branch, China Urban Planning Society',
+  type: '学术研讨会',
+  topics: ['城市更新', '完整社区', '城市体检', '城市运行'],
+  format: '线下会议',
+  start_date: '2026-10-16', end_date: '2026-10-18',
+  country: '中国', city: '杭州', region: '中国',
+  venue: '浙江省城乡规划设计研究院（杭州市西湖区余杭塘路828号）',
+  organizer: '中国城市规划学会',
+  co_organizer: '中国城市规划学会城市更新分会、浙江省城乡规划设计研究院、东南大学建筑学院',
+  deadline: '2026-09-30',
+  fee: '不收取注册费',
+  series: '中国城市规划学会城市更新分会年会',
+  summary: '由中国城市规划学会主办、城市更新分会与浙江省城乡规划设计研究院、东南大学建筑学院联合承办的学术研讨会暨年会，于 2026 年 10 月 16 日至 18 日在杭州市召开，主题为“城市更新与现代化人民城市”。安排为 10 月 16 日参会报到、17 日学术研讨会与分会工作会议、18 日杭州城市更新案例学术调研。本次会议不收取注册费，参会回执表填写截止 2026 年 9 月 30 日。',
+  evidence: '由中国城市规划学会主办，中国城市规划学会城市更新分会、浙江省城乡规划设计研究院、东南大学建筑学院联合承办的“城市更新与现代化人民城市学术研讨会暨2026年中国城市规划学会城市更新分会年会”，拟于2026年10月16-18日在杭州市召开。……四、会议地点 浙江省城乡规划设计研究院（杭州市西湖区余杭塘路828号）……六、会议注册与报到 本次会议不收取注册费。',
+  source_name: '中国城市规划网（学会通知公告）',
+  source_url: 'https://www.planning.org.cn/solicity/view?id=2812'
+},
+{
+  slug: 'ev-foshan-ihd-2026',
+  name: '2026年国际古迹遗址日主场活动',
+  name_en: '2026 International Heritage Day Main Event',
+  type: '行业活动',
+  topics: ['文化遗产', '历史建筑', '文物保护'],
+  format: '线下活动',
+  start_date: '2026-04-18', end_date: '2026-04-18',
+  country: '中国', city: '佛山', region: '中国', venue: '广东佛山',
+  organizer: '中国古迹遗址保护协会、广东省文化和旅游厅（广东省文物局）、佛山市人民政府',
+  co_organizer: '佛山市文化广电旅游体育局、广东省古迹保护协会、佛山市祖庙博物馆',
+  series: '国际古迹遗址日',
+  summary: '2026 年 4 月 18 日，由中国古迹遗址保护协会、广东省文化和旅游厅（广东省文物局）与佛山市人民政府共同主办的 2026 年国际古迹遗址日主场活动在广东佛山举行，由佛山市文化广电旅游体育局、广东省古迹保护协会与佛山市祖庙博物馆承办。',
+  evidence: '2026年4月18日，由中国古迹遗址保护协会、广东省文化和旅游厅（广东省文物局）、佛山市人民政府共同主办，佛山市文化广电旅游体育局、广东省古迹保护协会、佛山市祖庙博物馆承办的2026年国际古迹遗址日主场活动在广东佛山举行。',
+  source_name: '中国古迹遗址保护协会（ICOMOS China）官网',
+  source_url: 'http://www.icomoschina.org.cn/content/details57_23224.html'
+},
+{
+  slug: 'ev-concreto-final-2026',
+  name: 'CONCRETO Academy 结业活动',
+  name_en: 'CONCRETO Academy Final Event',
+  type: '行业交流',
+  topics: ['工业遗产', '文化遗产', '绿色低碳'],
+  format: '线下会议',
+  start_date: '2026-12-04', end_date: '2026-12-04',
+  country: '比利时', city: '布鲁塞尔（Brussels）', region: '欧洲', venue: '',
+  organizer: 'CONCRETO Academy（欧盟资助 CONCRETO 项目）',
+  co_organizer: '',
+  series: 'CONCRETO Academy',
+  summary: 'CONCRETO 项目为期三年合作的结业活动于 2026 年 12 月 4 日在布鲁塞尔举行，面向混凝土遗产保护领域的从业者、教育者、学生与合作伙伴，内容包括主题讨论、经验交流、人脉拓展与技术交流，并同步开放活动报名。',
+  evidence: 'CONCRETO Academy Final Event. Join us on December 4th in Brussels for the CONCRETO Academy Final Event! As we bring three years of collaboration, learning, and knowledge exchange to a close, we invite you to celebrate the achievements of the CONCRETO project and look ahead to the future of concrete heritage conservation.',
+  source_name: 'CONCRETO Academy 官方页面',
+  source_url: 'https://concreto-academy.org/concreto-academy-final-event/'
+}
+];
+
+function main() {
+  const dbPath = path.join(ROOT, 'data', 'portal.db');
+  const stamp = new Date().toISOString().replace(/[-:T]/g, '').slice(0, 13);
+  const bak = path.join(ROOT, 'data', 'portal.db.bak-' + stamp);
+  fs.copyFileSync(dbPath, bak);
+  console.log('BACKUP: ' + bak);
+
+  const today = new Date().toISOString().slice(0, 10);
+  let n = 0;
+  EVENTS.forEach(function (e) {
+    const rec = Object.assign({}, e, {
+      registration_url: e.source_url,
+      visibility: 'public'
+    });
+    rec.status = evdb.liveStatus(rec, today);
+    const saved = evdb.upsertEvent(rec);
+    if (!saved) throw new Error('insert failed: ' + e.slug);
+    n++;
+  });
+  console.log('SEEDED: ' + n + ' events');
+
+  const fs2 = fs;
+  fs2.writeFileSync(
+    path.join(ROOT, 'data', 'events_seed.json'),
+    JSON.stringify({ generated_at: new Date().toISOString(), count: EVENTS.length, events: EVENTS }, null, 2),
+    'utf8');
+
+  const all = evdb.listEvents({});
+  console.log('DB COUNT: ' + all.length);
+  all.forEach(function (e) {
+    console.log('  ' + e.slug + ' | ' + e.start_date + ' | ' + e.status + ' | ' + e.type + ' | ' + e.city);
+  });
+  const f = evdb.eventFacets();
+  console.log('FACETS type=' + JSON.stringify(f.type) + ' region=' + JSON.stringify(f.region) + ' format=' + JSON.stringify(f.format));
+}
+main();

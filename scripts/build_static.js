@@ -2,6 +2,7 @@ const fs = require('fs');
 const path = require('path');
 const db = require('../src/db.js');
 const views = require('../src/views.js');
+const evdb = require('../src/db_events.js');
 const BASE = path.resolve(__dirname, '..');
 const DIST = path.join(BASE, 'dist');
 
@@ -39,6 +40,10 @@ function rewrite(html) {
   s = s.replace(/href="\/about"/g, 'href="/about/index.html"');
   s = s.replace(/href="\/guide"/g, 'href="/guide/index.html"');
   s = s.replace(/href="\/map"/g, 'href="/map/index.html"');
+  s = s.replace(/href="\/events\/([^"?#]+)"/g, function (m, slug) {
+    return slug === 'index.html' ? m : 'href="/events/' + slug + '.html"';
+  });
+  s = s.replace(/href="\/events"/g, 'href="/events/index.html"');
   s = s.replace(/href="\/entry\/([^"?#]+)"/g,
     function (m, slug) { return 'href="/entry/' + slug + '.html"'; });
   s = s.replace(/href="\/"/g, 'href="/index.html"');
@@ -57,6 +62,7 @@ function latestDate() {
 function main() {
   mkdirp(DIST);
   const st = db.stats();
+  st.events = evdb.countEvents();
   const facets = db.facets();
   const hot = db.listEntries({ limit: 8, sort: 'date_desc' });
   write('index.html', rewrite(views.homePage({
@@ -104,6 +110,25 @@ function main() {
   whPts.forEach(function (p) { if (zhNames[p.id] && zhNames[p.id].n === p.n) zhApplied++; });
   mapStat.zh = zhApplied;
   console.log('map build: points=' + whPts.length + ' cn=' + mapStat.cn + ' linked_cases=' + mapStat.linked + ' zh_names=' + zhApplied);
+  /* 行业活动与培训：列表页 + 详情页 + 客户端日历数据 */
+  const evAll = evdb.listEvents({});
+  evAll.forEach(function (ev) { ev.status = evdb.liveStatus(ev); });
+  const evFacets = evdb.eventFacets(evAll);
+  write('events/index.html', rewrite(views.eventsIndexPage({
+    events: evAll, facets: evFacets, total: st.total, updated: latestDate()
+  })));
+  evAll.forEach(function (ev) {
+    const related = evAll.filter(function (x) {
+      return x.slug !== ev.slug && (x.type === ev.type || x.region === ev.region);
+    }).slice(0, 5);
+    write('events/' + ev.slug + '.html', rewrite(views.eventDetailPage({
+      event: ev, related: related, total: st.total, updated: latestDate()
+    })));
+  });
+  write('data/events.json', JSON.stringify({
+    generated_at: new Date().toISOString(), count: evAll.length, events: evAll
+  }, null, 2));
+  console.log('events build: count=' + evAll.length);
   const per = 20;
   const total = db.countEntries({ limit: 2000 });
   const pages = Math.max(1, Math.ceil(total / per));
@@ -143,10 +168,13 @@ function main() {
     path.join(DIST, 'public', 'map.js'));
   fs.copyFileSync(path.join(BASE, 'public', 'map.css'),
     path.join(DIST, 'public', 'map.css'));
+  fs.copyFileSync(path.join(BASE, 'public', 'events.js'),
+    path.join(DIST, 'public', 'events.js'));
   write('robots.txt', 'User-agent: *' + String.fromCharCode(10) +
     'Allow: /' + String.fromCharCode(10));
   console.log('static build done: pages=' + pages +
     ' entries=' + all.length +
+    ' events=' + evAll.length +
     ' dist=' + DIST);
 }
 
