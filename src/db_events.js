@@ -89,7 +89,7 @@ function eventFacets(list) {
     if (r.format) format[r.format] = (format[r.format] || 0) + 1;
     if (r.region) region[r.region] = (region[r.region] || 0) + 1;
     if (r.status) status[r.status] = (status[r.status] || 0) + 1;
-    const tp = pj(r.topics);
+    const tp = Array.isArray(r.topics) ? r.topics : pj(r.topics);
     for (const t of tp) topic[t] = (topic[t] || 0) + 1;
   }
   return { type: type, topic: topic, format: format, region: region, status: status };
