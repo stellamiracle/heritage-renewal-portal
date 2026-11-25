@@ -86,15 +86,15 @@ for i in $(seq 1 40); do
   st=$(gh api "repos/${REPO}/pages/deployments/${dep}" --jq '.status' 2>/dev/null || true)
   echo "poll ${i}: ${st}"
   case "${st}" in
-    built)
+    built|succeed)
       if [ -n "${SITE_URL}" ]; then
         echo "page_url=${SITE_URL}" >> "${GITHUB_OUTPUT}"
       fi
-      echo "deployment built"
+      echo "deployment ${st}"
       exit 0
       ;;
-    errored)
-      echo "::error::pages deployment errored"
+    errored|failed|deployment_failed)
+      echo "::error::pages deployment ${st}"
       exit 1
       ;;
   esac

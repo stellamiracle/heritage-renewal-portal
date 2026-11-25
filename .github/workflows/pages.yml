@@ -19,7 +19,7 @@ jobs:
   deploy:
     environment:
       name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
+      url: https://stellamiracle.github.io/heritage-renewal-portal/
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -29,6 +29,9 @@ jobs:
           path: publish
       - name: Deploy via REST (bypass twirp artifact index lag)
         id: deployment
+        # REST deploy is the primary path; a failure here must not redden the run,
+        # because the deploy-pages@v4 fallback below still produces a live site.
+        continue-on-error: true
         env:
           GH_TOKEN: ${{ github.token }}
           REPO: ${{ github.repository }}
@@ -38,8 +41,8 @@ jobs:
         run: |
           bash .github/scripts/deploy-pages-rest.sh
       - name: Cool down before fallback
-        if: failure()
+        if: failure() || steps.deployment.outcome == 'failure'
         run: sleep 90
       - name: Fallback deploy-pages@v4
-        if: failure()
+        if: failure() || steps.deployment.outcome == 'failure'
         uses: actions/deploy-pages@v4
