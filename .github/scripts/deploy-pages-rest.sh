@@ -35,26 +35,45 @@ for id in ${ids}; do
   fi
 done
 
+OWNER="${REPO%%/*}"
 echo "::group::Fetch OIDC token"
-oidc_raw=$(curl -sS -H "Authorization: bearer ${ACTIONS_ID_TOKEN_REQUEST_TOKEN}" "${ACTIONS_ID_TOKEN_REQUEST_URL}&audience=api.github.com")
-oidc=$(echo "${oidc_raw}" | jq -r '.value // empty')
-if [ -z "${oidc}" ]; then
-  echo "::error::could not obtain OIDC token"
-  exit 1
-fi
+# The Pages API requires the OIDC audience to be the repository owner
+# (https://github.com/<owner>); api.github.com is rejected with HTTP 400
+# "Invalid actions OIDC token due to Invalid audience".
+# Try the explicit owner audience first, then the token default (no audience param).
+audiences=("https://github.com/${OWNER}" "")
 
 echo "::group::Create Pages deployment"
-payload=$(jq -n --argjson a "${keep}" --arg v "${BUILD_VERSION}" --arg t "${oidc}" '{artifact_id: $a, pages_build_version: $v, oidc_token: $t}')
-echo "payload artifact_id type: $(echo "${payload}" | jq -r '.artifact_id|type')"
-echo "payload artifact_id value: $(echo "${payload}" | jq -r '.artifact_id')"
-echo "${payload}" | gh api -X POST -H "Content-Type: application/json" "repos/${REPO}/pages/deployments" --input - > deploy_resp.json 2> deploy_err.txt
-rc=$?
-if [ "${rc}" -ne 0 ]; then
-  echo "::warning::REST deployment request failed:"
-  cat deploy_err.txt
+dep=""
+for aud in "${audiences[@]}"; do
+  url="${ACTIONS_ID_TOKEN_REQUEST_URL}"
+  if [ -n "${aud}" ]; then
+    url="${url}&audience=${aud}"
+  fi
+  oidc_raw=$(curl -sS -H "Authorization: bearer ${ACTIONS_ID_TOKEN_REQUEST_TOKEN}" "${url}")
+  oidc=$(echo "${oidc_raw}" | jq -r '.value // empty')
+  if [ -z "${oidc}" ]; then
+    echo "::warning::no OIDC token for audience '${aud:-<default>}'"
+    continue
+  fi
+  echo "using OIDC audience '${aud:-<default>}'"
+  payload=$(jq -n --argjson a "${keep}" --arg v "${BUILD_VERSION}" --arg t "${oidc}" '{artifact_id: $a, pages_build_version: $v, oidc_token: $t}')
+  echo "payload artifact_id type: $(echo "${payload}" | jq -r '.artifact_id|type')"
+  echo "payload artifact_id value: $(echo "${payload}" | jq -r '.artifact_id')"
+  echo "${payload}" | gh api -X POST -H "Content-Type: application/json" "repos/${REPO}/pages/deployments" --input - > deploy_resp.json 2> deploy_err.txt
+  rc=$?
+  if [ "${rc}" -ne 0 ]; then
+    echo "::warning::REST deployment request failed (audience '${aud:-<default>}'):"
+    cat deploy_err.txt
+    continue
+  fi
+  dep=$(jq -r '.id // empty' deploy_resp.json)
+  break
+done
+if [ -z "${dep}" ]; then
+  echo "::error::no Pages deployment created"
   exit 1
 fi
-dep=$(jq -r '.id // empty' deploy_resp.json)
 echo "deployment id: ${dep}"
 jq '{id, status, url, message}' deploy_resp.json 2>/dev/null || cat deploy_resp.json
 if [ -z "${dep}" ]; then
