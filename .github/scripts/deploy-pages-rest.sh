@@ -11,9 +11,18 @@ BUILD_VERSION="${BUILD_VERSION:?BUILD_VERSION required}"
 SITE_URL="${SITE_URL:-}"
 
 echo "::group::Locate github-pages artifact via REST"
-ids=$(gh api "repos/${REPO}/actions/runs/${RUN_ID}/artifacts" --jq '.artifacts[] | select(.name=="github-pages") | .id' 2>/dev/null || true)
-echo "artifact ids: [${ids}]"
-keep=$(echo "${ids}" | grep -E '^[0-9]+$' | sort -n | tail -1)
+ids=""
+keep=""
+for i in $(seq 1 10); do
+  ids=$(gh api "repos/${REPO}/actions/runs/${RUN_ID}/artifacts" --jq '.artifacts[] | select(.name=="github-pages") | .id' 2>/dev/null || true)
+  keep=$(echo "${ids}" | grep -E '^[0-9]+$' | sort -n | tail -1)
+  if [ -n "${keep}" ]; then
+    echo "artifact ids: [${ids}] (attempt ${i})"
+    break
+  fi
+  echo "artifact not visible via REST yet (attempt ${i}), waiting 6s"
+  sleep 6
+done
 if [ -z "${keep}" ]; then
   echo "::error::no github-pages artifact visible via REST"
   exit 1
@@ -35,7 +44,9 @@ if [ -z "${oidc}" ]; then
 fi
 
 echo "::group::Create Pages deployment"
-payload=$(jq -n --arg a "${keep}" --arg v "${BUILD_VERSION}" --arg t "${oidc}" '{artifact_id: $a, pages_build_version: $v, oidc_token: $t}')
+payload=$(jq -n --argjson a "${keep}" --arg v "${BUILD_VERSION}" --arg t "${oidc}" '{artifact_id: $a, pages_build_version: $v, oidc_token: $t}')
+echo "payload artifact_id type: $(echo "${payload}" | jq -r '.artifact_id|type')"
+echo "payload artifact_id value: $(echo "${payload}" | jq -r '.artifact_id')"
 echo "${payload}" | gh api -X POST -H "Content-Type: application/json" "repos/${REPO}/pages/deployments" --input - > deploy_resp.json 2> deploy_err.txt
 rc=$?
 if [ "${rc}" -ne 0 ]; then
