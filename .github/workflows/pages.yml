@@ -27,31 +27,19 @@ jobs:
       - uses: actions/upload-pages-artifact@v3
         with:
           path: publish
-      - name: Wait for Pages artifact to become visible
+      - name: Deploy via REST (bypass twirp artifact index lag)
+        id: deployment
         env:
           GH_TOKEN: ${{ github.token }}
           REPO: ${{ github.repository }}
           RUN_ID: ${{ github.run_id }}
+          BUILD_VERSION: ${{ github.sha }}
+          SITE_URL: https://stellamiracle.github.io/heritage-renewal-portal/
         run: |
-          set -uo pipefail
-          for i in $(seq 1 30); do
-            ids=$(gh api "repos/$REPO/actions/runs/$RUN_ID/artifacts" --jq '.artifacts[] | select(.name=="github-pages") | .id' 2>/dev/null || true)
-            count=$(printf '%s\n' "$ids" | grep -c '[0-9]' || true)
-            echo "attempt $i: github-pages artifacts=$count"
-            if [ "$count" -ge 1 ]; then
-              keep=$(printf '%s\n' "$ids" | grep '[0-9]' | tail -1)
-              for id in $ids; do
-                if [ "$id" != "$keep" ]; then
-                  echo "deleting duplicate artifact $id"
-                  gh api -X DELETE "repos/$REPO/actions/artifacts/$id" || true
-                fi
-              done
-              echo "artifact ready: $keep"
-              exit 0
-            fi
-            sleep 5
-          done
-          echo "::error::github-pages artifact not visible after 30 attempts"
-          exit 1
-      - id: deployment
+          bash .github/scripts/deploy-pages-rest.sh
+      - name: Cool down before fallback
+        if: failure()
+        run: sleep 90
+      - name: Fallback deploy-pages@v4
+        if: failure()
         uses: actions/deploy-pages@v4
