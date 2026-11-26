@@ -98,13 +98,7 @@
         '" alt="' + esc(e.title) + ' 现场照片（来源发布方）" loading="lazy"><figcaption>现场照片 · 来源：' +
         esc(e.source_name || '原发布方') + '</figcaption></figure>';
     }
-    var hasLoc = e.lat !== null && e.lat !== undefined && e.lat !== '' &&
-      e.lon !== null && e.lon !== undefined && e.lon !== '';
-    var kind = hasLoc ? '自绘区位示意图' : '自绘档案信息图';
-    var src = '../public/figures/' + e.slug + (hasLoc ? '.loc.svg' : '.info.svg');
-    return '<figure class="card-fig"><img src="' + src + '" alt="' + esc(e.title) + ' ' + kind +
-      '（本站自绘示意资产，非现场照片）" loading="lazy" width="720" height="500">' +
-      '<figcaption>' + kind + ' · 本站自绘示意资产，非现场照片、非历史影像</figcaption></figure>';
+    return '';
   }
   function card(e, kw) {
     var label = TYPE_LABEL[e.type] || e.type;
@@ -190,3 +184,4 @@
     });
   });
 })();
+

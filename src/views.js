@@ -84,12 +84,6 @@ function statusBadge(s) {
 
 function caseFigure(e, mode) {
   if (!e || e.type !== 'case' || !e.slug) return '';
-  const hasLoc = !(e.lat === null || e.lat === undefined || e.lat === '') &&
-    !(e.lon === null || e.lon === undefined || e.lon === '');
-  const info = '/public/figures/' + e.slug + '.info.svg';
-  const loc = '/public/figures/' + e.slug + '.loc.svg';
-  const altLoc = E(e.title) + ' 自绘区位示意图（示意资产，非现场照片）';
-  const altInfo = E(e.title) + ' 自绘档案信息图（示意资产，非现场照片）';
   const photos = (Array.isArray(e.photos) ? e.photos : []).filter(function (p) { return p && p.src; });
   if (mode === 'card') {
     if (photos.length) {
@@ -98,12 +92,6 @@ function caseFigure(e, mode) {
         ' 现场照片（来源发布方）" loading="lazy"><figcaption>现场照片 · 来源：' +
         E(e.source_name || '原发布方') + '</figcaption></figure>';
     }
-    const src = hasLoc ? loc : info;
-    const cap = hasLoc ? '自绘区位示意图 · 示意资产，非现场照片'
-      : '自绘档案信息图 · 示意资产，非现场照片';
-    return '<figure class="card-fig"><img src="' + src + '" alt="' + altLoc +
-      '" loading="lazy" width="720" height="500"><figcaption>' + cap +
-      '</figcaption></figure>';
   }
   let photoSec = '';
   if (photos.length) {
@@ -118,17 +106,7 @@ function caseFigure(e, mode) {
       '<p class="fig-note">以下为来源发布方发布的现场照片，版权归原发布方/摄影者所有，本站仅作索引展示；点击可跳转原始链接。</p>' +
       '<div class="photo-grid">' + items + '</div></section>';
   }
-  const figs = [];
-  if (hasLoc) {
-    figs.push('<figure class="fig"><img src="' + loc + '" alt="' + altLoc +
-      '" width="720" height="500"><figcaption>区位示意图 · 本站自绘示意资产，底图为 Natural Earth 1:110m 国界图层，标注点为《世界遗产名录》公布坐标，不代表保护地范围、管理权或所有权；非现场照片、非历史影像。</figcaption></figure>');
-  }
-  figs.push('<figure class="fig"><img src="' + info + '" alt="' + altInfo +
-    '" width="720" height="500"><figcaption>档案信息图 · 本站自绘示意资产，全部字段取自本条目已核验记录；非现场照片、非历史影像。</figcaption></figure>');
-  if (!hasLoc) {
-    figs.push('<p class="fig-note">该案例未核验到《世界遗产名录》公布坐标，因此未生成区位示意图，也未在全球遗产地图上标注；本站不虚构坐标。</p>');
-  }
-  return photoSec + '<section class="figs"><h2>图示</h2>' + figs.join('') + '</section>';
+  return mode === 'card' ? '' : photoSec;
 }
 
 function card(e) {
@@ -761,3 +739,7 @@ module.exports = {
   inboxPage: inboxPage,
   auditPage: auditPage
 };
+
+
+
+

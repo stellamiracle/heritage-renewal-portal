@@ -774,7 +774,7 @@ main h1 { font-size: 30px; margin: 30px 0 18px; font-family: var(--serif); }
 .badge.ev-type { background: #e9edf3; color: #1f3a5f; border-color: #ccd6e3; font-weight: 700; }
 
 
-/* 案例现场照片图集：与自绘示意图分区呈现，两列自适应网格 */
+/* 案例现场照片图集：两列自适应网格 */
 .figs.photos .photo-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 14px; }
 .figs.photos .photo { margin: 0; }
 .figs.photos .photo a { display: block; }

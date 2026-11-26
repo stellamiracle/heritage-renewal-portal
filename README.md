@@ -1,6 +1,6 @@
 # 遗产保护与城市更新 · 专题资料库
 
-面向遗产保护与城市更新领域的法规、政策、案例与行业动态汇编检索站点，配套交互式全球遗产地图、案例档案信息图与案例现场照片。
+面向遗产保护与城市更新领域的法规、政策、案例与行业动态汇编检索站点，配套交互式全球遗产地图与案例现场照片。
 
 - **在线站点**：https://stellamiracle.github.io/heritage-renewal-portal/
 - **完整检索版**（全文搜索 + 组合筛选）：https://stellamiracle.github.io/heritage-renewal-portal/app/
@@ -12,7 +12,7 @@
 - 已公开条目 **141 条**：case 67 / policy 41 / regulation 18 / news 15
 - 行政层级分布：国家级 63 / 国际级 60 / 地方级 15 / 中央级 3
 - 行业动态 **20 条**（`publish/data/events.json`）
-- 案例档案信息图 **127 个**（`publish/public/figures/*.svg`，含档案信息图与位置示意图）
+- 案例自绘图示：**已全部移除**，站内不再提供任何示意图，只展示来源方发布的现场照片
 - 案例现场照片 **39 张**，覆盖 **6 个案例**（见下节）
 - 每条标注：发布机关、文号、发布日期、效力状态、行政层级、地区、原文链接
 
@@ -31,7 +31,7 @@
 | 解码文化自信的城市样本丨与古为新尽风华——解码“一城宋韵”开封的文化自信样本 | 新华网（人民网河南频道同文转载） | https://www.news.cn/local/20260406/07652a19b0874253869119f03752f1db/c.html |
 | 宜兴丁蜀陶二厂文化街区更新：老厂房里的陶式生活 | 第一财经（百家号官方账号） | https://baijiahao.baidu.com/s?id=1871475611884790295&wfr=spider&for=pc |
 
-- 未取得现场照片的案例使用自绘 SVG 示意图（`publish/public/figures/`），页面已明确标注「**非现场照片、非历史影像**」
+- 未取得现场照片的案例不配图，条目页仅保留文字记录，本站不用自绘示意图替代现场照片
 - 照片著作权归原拍摄 / 发布方，本站仅作案例现场示意并标注来源链接，二次转载前请确认授权
 
 ## 三、来源说明
@@ -45,7 +45,7 @@
 
 ```
 src/            # Node 服务与页面模板（公共站 + /admin 后台）
-scripts/        # 静态构建、单文件打包、图示与事件脚本
+scripts/        # 静态构建、单文件打包与事件脚本
 public/         # 样式、脚本、地图数据与案例照片（39 张 + 清单）
 data/           # 地图与事件种子数据（wh_map.json / events_seed.json 等）
 publish/        # 发布产物，即 GitHub Pages 站点根目录
@@ -61,7 +61,7 @@ publish/
 ├── entry/              # 141 个条目详情页
 ├── map/                # 全球遗产地图（UNESCO 地点 + 案例定位）
 ├── data/               # entries.json / events.json / case_points.json / wh_map.json
-├── public/             # 样式、脚本、figures/（127 个 SVG）、photos/（39 张照片 + 清单）
+├── public/             # 样式、脚本、photos/（39 张照片 + 清单）
 ├── app/index.html      # 单文件完整检索版（内联 CSS + 141 条数据 + 39 张内嵌照片 + 哈希路由）
 └── robots.txt
 ```
@@ -92,12 +92,12 @@ node scripts/_patch_static_search.js # 静态检索脚本 -> publish/public/sear
 ```
 
 - 单文件版的照片先用 FFmpeg 压缩（宽度上限 1200px、JPEG `-q:v 5`，缓存于 `dist-single/.photo_opt`），再转成 `data:image/jpeg;base64` 内嵌；FFmpeg 不可用时回退原图
-- `scripts/build_figures.js` 生成案例档案信息图；`scripts/seed_events.js` 写入行业动态
+- `scripts/seed_events.js` 写入行业动态
 - 发布由 GitHub Actions 完成：`.github/workflows/pages.yml` 先上传 `publish` 产物，再以 `.github/scripts/deploy-pages-rest.sh` 走 REST 部署，失败等待 90 秒后回退 `deploy-pages@v4`
 
 ## 八、自检
 
-- 构建后核对：`dist/` 与 `publish/` 页数一致、`publish/public/photos/` 文件数 = 39 + 1、`publish/app/index.html` 内嵌 39 个 JPEG Data URI
+- 构建后核对：`dist/` 与 `publish/` 页数一致、`publish/public/photos/` 文件数 = 39 + 1、`publish/app/index.html` 内嵌 39 个 JPEG Data URI；且 `publish/public/figures/` 不存在、页面无「图示」区段与 `figures/` 引用
 - 线上核对：条目详情页含 `photo-grid` 图集与来源说明，browse 分页含 `card-fig-photo` 封面，抽样图片返回 200 且具有 JPEG 文件头
 - 已知限制：站点为静态快照，后台写入不直接反映到线上；地图交互依赖 `public/map.js` 与 `data/wh_map.json`
 

@@ -37,13 +37,6 @@ function stamp(d) {
   return pad(d.getMonth() + 1) + '-' + pad(d.getDate()) + '_' +
     pad(d.getHours()) + pad(d.getMinutes());
 }
-const FIGDIR = path.join(B, 'public', 'figures');
-function figData(slug, kind) {
-  if (!slug) return '';
-  const f = path.join(FIGDIR, slug + '.' + kind + '.svg');
-  if (!fs.existsSync(f)) return '';
-  return 'data:image/svg+xml;base64,' + fs.readFileSync(f).toString('base64');
-}
 
 /* 案例现场照片：单文件版必须自包含，照片以 data URI 内嵌，不依赖外部 public/photos */
 const PHOTODIR = path.join(B, 'public', 'photos');
@@ -120,13 +113,8 @@ const entries = pub.map(function (e) {
     .map(function (x) {
       return { slug: x.slug, title: x.title, publish_date: x.publish_date };
     });
-  let fig = null;
-  if (e.type === 'case') {
-    const info = figData(e.slug, 'info');
-    if (info) fig = { info: info, loc: figData(e.slug, 'loc') };
-  }
   return {
-    slug: e.slug, title: e.title, type: e.type, fig: fig,
+    slug: e.slug, title: e.title, type: e.type,
     photos: photoList(e),
     type_label: e.type_label || '', issuer: e.issuer || '',
     doc_no: e.doc_no || '', publish_date: e.publish_date || '',
@@ -189,3 +177,5 @@ const report = [
 ].join(' | ');
 fs.writeFileSync(path.join(B, '_single_build.txt'), report, 'utf8');
 console.log(report);
+
+

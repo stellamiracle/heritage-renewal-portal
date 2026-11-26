@@ -126,24 +126,6 @@
         '@LT@p class=@Q@fig-note@Q@@GT@以下为来源发布方发布的现场照片，版权归原发布方/摄影者所有，本站仅作索引展示；点击可跳转原始链接。@LT@/p@GT@' +
         '@LT@div class=@Q@photo-grid@Q@@GT@' + items + '@LT@/div@GT@@LT@/section@GT@';
     }
-    var figs = '';
-    if (e.fig && e.fig.info) {
-      figs = '@LT@section class=@Q@figs@Q@@GT@@LT@h2@GT@图示@LT@/h2@GT@';
-      if (e.fig.loc) {
-        figs += '@LT@figure class=@Q@fig@Q@@GT@@LT@img src=@Q@' + e.fig.loc +
-          '@Q@ alt=@Q@' + E(e.title) + ' 自绘区位示意图（本站自绘示意资产，非现场照片）@Q@' +
-          ' width=@Q@720@Q@ height=@Q@500@Q@@GT@' +
-          '@LT@figcaption@GT@区位示意图 · 本站自绘示意资产，底图为 Natural Earth 1:110m 国界图层，标注点为《世界遗产名录》公布坐标，不代表保护地范围、管理权或所有权；非现场照片、非历史影像。@LT@/figcaption@GT@@LT@/figure@GT@';
-      }
-      figs += '@LT@figure class=@Q@fig@Q@@GT@@LT@img src=@Q@' + e.fig.info +
-        '@Q@ alt=@Q@' + E(e.title) + ' 自绘档案信息图（本站自绘示意资产，非现场照片）@Q@' +
-        ' width=@Q@720@Q@ height=@Q@500@Q@@GT@' +
-        '@LT@figcaption@GT@档案信息图 · 本站自绘示意资产，全部字段取自本条目已核验记录；非现场照片、非历史影像。@LT@/figcaption@GT@@LT@/figure@GT@';
-      if (!e.fig.loc) {
-        figs += '@LT@p class=@Q@fig-note@Q@@GT@该案例未核验到《世界遗产名录》公布坐标，因此未生成区位示意图，也未在全球遗产地图上标注；本站不虚构坐标。@LT@/p@GT@';
-      }
-      figs += '@LT@/section@GT@';
-    }
     return '@LT@article class=@Q@detail@Q@@GT@' +
       '@LT@div class=@Q@card-top@Q@@GT@@LT@span class=@Q@tag tag-' + E(e.type) +
         '@Q@@GT@' + E(e.type_label || typeLabel(e.type)) + '@LT@/span@GT@' +
@@ -154,7 +136,6 @@
       (chips ? '@LT@p class=@Q@chips@Q@@GT@' + chips + '@LT@/p@GT@' : '') +
       (e.summary ? '@LT@p class=@Q@lead@Q@@GT@' + E(e.summary) + '@LT@/p@GT@' : '') +
       photoSec +
-      figs +
       '@LT@div class=@Q@prose@Q@@GT@' + (e.bodyHtml || '') + '@LT@/div@GT@' +
       (files ? '@LT@section class=@Q@files@Q@@GT@@LT@h2@GT@附件@LT@/h2@GT@@LT@ul@GT@' +
         files + '@LT@/ul@GT@@LT@/section@GT@' : '') +
@@ -222,3 +203,4 @@
     boot();
   }
 })();
+

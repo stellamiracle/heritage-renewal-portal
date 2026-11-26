@@ -8,13 +8,7 @@
         '@LT@figcaption@GT@现场照片 · 来源：' + E(e.source_name || '原发布方') +
         '@LT@/figcaption@GT@@LT@/figure@GT@';
     }
-    if (!e.fig || !e.fig.info) return '';
-    var loc = e.fig.loc;
-    var kind = loc ? '自绘区位示意图' : '自绘档案信息图';
-    return '@LT@figure class=@Q@card-fig@Q@@GT@@LT@img src=@Q@' + (loc || e.fig.info) +
-      '@Q@ alt=@Q@' + E(e.title) + ' ' + kind + '（本站自绘示意资产，非现场照片）@Q@' +
-      ' loading=@Q@lazy@Q@ width=@Q@720@Q@ height=@Q@500@Q@@GT@' +
-      '@LT@figcaption@GT@' + kind + ' · 本站自绘示意资产，非现场照片、非历史影像@LT@/figcaption@GT@@LT@/figure@GT@';
+    return '';
   }
   function cardHtml(e) {
     var meta = [E(e.issuer || ''), E(e.doc_no || '')].filter(Boolean).join(' · ');
