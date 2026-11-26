@@ -54,6 +54,17 @@ function rewrite(html) {
   return s;
 }
 
+function copyTree(src, dst) {
+  if (!fs.existsSync(src)) return;
+  fs.mkdirSync(dst, { recursive: true });
+  fs.readdirSync(src, { withFileTypes: true }).forEach(function (d) {
+    const s = path.join(src, d.name);
+    const t = path.join(dst, d.name);
+    if (d.isDirectory()) copyTree(s, t);
+    else fs.copyFileSync(s, t);
+  });
+}
+
 function latestDate() {
   const st = db.stats();
   return (st.latest && st.latest.publish_date) || '';
@@ -105,7 +116,27 @@ function main() {
     .sort(function (a, b) { return String(b.y || '').localeCompare(String(a.y || '')) || String(a.n).localeCompare(String(b.n)); })
     .map(function (p) { return { id: p.id, n: p.n, en: p.en, state: p.c, y: p.y, cat: p.k, s: p.s }; });
   const basemap = JSON.parse(fs.readFileSync(path.join(BASE, 'data', 'world_paths.json'), 'utf8'));
-  write('map/index.html', rewrite(views.mapPage({ basemap: basemap, stats: mapStat, cnSites: cnSites, updated: latestDate(), total: st.total })));
+  /* 站内案例坐标图层：仅采用已核验的名录公布坐标；无坐标的案例不标注、不虚构 */
+  const caseRows = db.listEntries({ type: 'case', limit: 2000 }).filter(function (e) {
+    return e.visibility === 'public';
+  });
+  const casePts = [];
+  caseRows.forEach(function (e) {
+    const la = e.lat, lo = e.lon;
+    if (la === null || la === undefined || la === '') return;
+    if (lo === null || lo === undefined || lo === '') return;
+    if (!isFinite(Number(la)) || !isFinite(Number(lo))) return;
+    casePts.push({
+      slug: e.slug, t: e.title, la: Number(la), lo: Number(lo),
+      r: e.region || '', w: e.wh_id ? String(e.wh_id) : '', s: e.source_name || ''
+    });
+  });
+  const caseStat = {
+    total: caseRows.length, located: casePts.length,
+    unlocated: caseRows.length - casePts.length
+  };
+  write('data/case_points.json', JSON.stringify(casePts));
+  write('map/index.html', rewrite(views.mapPage({ basemap: basemap, stats: mapStat, cnSites: cnSites, caseStat: caseStat, updated: latestDate(), total: st.total })));
   write('data/wh_map.json', JSON.stringify(whPts));
   whPts.forEach(function (p) { if (zhNames[p.id] && zhNames[p.id].n === p.n) zhApplied++; });
   mapStat.zh = zhApplied;
@@ -170,6 +201,8 @@ function main() {
     path.join(DIST, 'public', 'map.css'));
   fs.copyFileSync(path.join(BASE, 'public', 'events.js'),
     path.join(DIST, 'public', 'events.js'));
+  /* 案例自绘图示资产：loc 区位示意图 + info 档案信息图 */
+  copyTree(path.join(BASE, 'public', 'figures'), path.join(DIST, 'public', 'figures'));
   write('robots.txt', 'User-agent: *' + String.fromCharCode(10) +
     'Allow: /' + String.fromCharCode(10));
   console.log('static build done: pages=' + pages +

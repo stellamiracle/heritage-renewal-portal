@@ -89,6 +89,16 @@
     return '<p class="snippet"><span class="snippet-label">正文命中</span>'
       + (s0 > 0 ? '…' : '') + hl(frag, kw) + (s1 < body.length ? '…' : '') + '</p>';
   }
+  function caseFig(e) {
+    if (!e || e.type !== 'case' || !e.slug) return '';
+    var hasLoc = e.lat !== null && e.lat !== undefined && e.lat !== '' &&
+      e.lon !== null && e.lon !== undefined && e.lon !== '';
+    var kind = hasLoc ? '自绘区位示意图' : '自绘档案信息图';
+    var src = '../public/figures/' + e.slug + (hasLoc ? '.loc.svg' : '.info.svg');
+    return '<figure class="card-fig"><img src="' + src + '" alt="' + esc(e.title) + ' ' + kind +
+      '（本站自绘示意资产，非现场照片）" loading="lazy" width="720" height="500">' +
+      '<figcaption>' + kind + ' · 本站自绘示意资产，非现场照片、非历史影像</figcaption></figure>';
+  }
   function card(e, kw) {
     var label = TYPE_LABEL[e.type] || e.type;
     var url = '../entry/' + (e.slug || e.id) + '.html';
@@ -100,7 +110,7 @@
       ? '<span class="badge ' + (STATUS_CLASS[e.status] || 'st-other') + '">' + esc(e.status) + '</span>'
       : '';
     var src = e.source_name ? '<p class="src">来源：' + esc(e.source_name) + '</p>' : '';
-    return '<article class="card"><div class="card-top"><span class="tag tag-' + esc(e.type) + '">' + esc(label) +
+    return '<article class="card">' + caseFig(e) + '<div class="card-top"><span class="tag tag-' + esc(e.type) + '">' + esc(label) +
       '</span>' + badge + '<time>' + esc(e.publish_date || '') + '</time></div>' +
       '<h3><a href="' + url + '">' + hl(e.title, kw) + '</a></h3>' +
       '<p class="meta">' + hl(meta, kw) + '</p>' +

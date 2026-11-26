@@ -82,12 +82,43 @@ function statusBadge(s) {
   return '<span class="badge ' + (map[s] || 'st-other') + '">' + E(s) + '</span>';
 }
 
+function caseFigure(e, mode) {
+  if (!e || e.type !== 'case' || !e.slug) return '';
+  const hasLoc = !(e.lat === null || e.lat === undefined || e.lat === '') &&
+    !(e.lon === null || e.lon === undefined || e.lon === '');
+  const info = '/public/figures/' + e.slug + '.info.svg';
+  const loc = '/public/figures/' + e.slug + '.loc.svg';
+  const altLoc = E(e.title) + ' 自绘区位示意图（示意资产，非现场照片）';
+  const altInfo = E(e.title) + ' 自绘档案信息图（示意资产，非现场照片）';
+  if (mode === 'card') {
+    const src = hasLoc ? loc : info;
+    const cap = hasLoc ? '自绘区位示意图 · 示意资产，非现场照片'
+      : '自绘档案信息图 · 示意资产，非现场照片';
+    return '<figure class="card-fig"><img src="' + src + '" alt="' + altLoc +
+      '" loading="lazy" width="720" height="500"><figcaption>' + cap +
+      '</figcaption></figure>';
+  }
+  const figs = [];
+  if (hasLoc) {
+    figs.push('<figure class="fig"><img src="' + loc + '" alt="' + altLoc +
+      '" width="720" height="500"><figcaption>区位示意图 · 本站自绘示意资产，底图为 Natural Earth 1:110m 国界图层，标注点为《世界遗产名录》公布坐标，不代表保护地范围、管理权或所有权；非现场照片、非历史影像。</figcaption></figure>');
+  }
+  figs.push('<figure class="fig"><img src="' + info + '" alt="' + altInfo +
+    '" width="720" height="500"><figcaption>档案信息图 · 本站自绘示意资产，全部字段取自本条目已核验记录；非现场照片、非历史影像。</figcaption></figure>');
+  if (!hasLoc) {
+    figs.push('<p class="fig-note">该案例未核验到《世界遗产名录》公布坐标，因此未生成区位示意图，也未在全球遗产地图上标注；本站不虚构坐标。</p>');
+  }
+  return '<section class="figs"><h2>图示</h2>' + figs.join('') + '</section>';
+}
+
 function card(e) {
   const meta = [E(e.issuer || ''), e.doc_no ? E(e.doc_no) : ''].filter(Boolean).join(' · ');
   const theme = (e.themes || []).slice(0, 3).map(function (t) { return '<span class="chip">' + E(t) + '</span>'; }).join('');
   const src = e.source_name ? '<p class="src">来源：' + E(e.source_name) + '</p>' : '';
+  const fig = caseFigure(e, 'card');
   return [
   '<article class="card">',
+  fig,
   '<div class="card-top"><span class="tag tag-' + E(e.type) + '">' + E(e.type_label) + '</span>',
   statusBadge(e.status),
   (e.publish_date ? '<time>' + E(e.publish_date) + '</time>' : ''), '</div>',
@@ -379,6 +410,7 @@ function detailPage(d) {
   '<dl class="kvs">' + rows.join('') + '</dl>',
   (chips && e.type !== 'case' ? '<p class="chips">' + chips + '</p>' : ''),
   (e.summary ? '<p class="lead">' + E(e.summary) + '</p>' : ''),
+  caseFigure(e, 'detail'),
   '<div class="prose">' + md.render(e.body || '') + '</div>',
   (files ? '<section class="files"><h2>附件</h2><ul>' + files + '</ul></section>' : ''),
   (e.source_url ? '<p class="source">原文链接：<a href="' + E(e.source_url) + '" target="_blank" rel="noopener">' + E(e.source_url) + '</a></p>' : ''),

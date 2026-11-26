@@ -6,6 +6,7 @@ const NL = String.fromCharCode(10);
 function mapPage(d, layout) {
   const bm = d.basemap || { w: 1000, h: 500, paths: [] };
   const s = d.stats || {};
+  const cs = d.caseStat || { total: 0, located: 0, unlocated: 0 };
   const CATCN = { Cultural: '文化遗产', Natural: '自然遗产', Mixed: '混合遗产' };
   const lands = (bm.paths || []).map(function (p) {
     return '<path class="land" d="' + p.d + '"><title>' + E(p.n) + '</title></path>';
@@ -33,9 +34,10 @@ function mapPage(d, layout) {
     '<section class="map-head">',
       '<p class="kicker">GLOBAL HERITAGE ATLAS</p>',
       '<h1 class="display">全球遗产地图</h1>',
-      '<p class="lede">以联合国教科文组织《世界遗产名录》为底账，' + (s.total || 0) + ' 处遗产地按名录公布坐标绘制成图。底图为 Natural Earth 1:110m 国界图层；点位表示名录公布的位置，不代表保护地范围、管理权或所有权。可按遗产类型、所属区域、国别与关键词筛选，并回溯站内案例档案与联合国教科文组织官方页面。</p>',
+      '<p class="lede">以联合国教科文组织《世界遗产名录》为底账，' + (s.total || 0) + ' 处遗产地按名录公布坐标绘制成图。底图为 Natural Earth 1:110m 国界图层；点位表示名录公布的位置，不代表保护地范围、管理权或所有权。可按遗产类型、所属区域、国别与关键词筛选，筛选结果可直接在图上定位，并回溯站内案例档案与联合国教科文组织官方页面。</p>',
       '<ul class="stat-list stat-map">',
         '<li><b>' + (s.total || 0) + '</b><span>名录遗产地</span></li>',
+        '<li><b>' + (d.total || 0) + '</b><span>已公开条目</span></li>',
         '<li><b>' + (s.cn || 0) + '</b><span>中国相关遗产地</span></li>',
         '<li><b>' + (s.cultural || 0) + '</b><span>文化遗产</span></li>',
         '<li><b>' + (s.natural || 0) + '</b><span>自然遗产</span></li>',
@@ -52,26 +54,40 @@ function mapPage(d, layout) {
         '<label class="wh-check"><input type="checkbox" id="wh-cn"> 仅看中国</label>',
         '<span class="wh-count" id="wh-count"></span>',
       '</div>',
+      '<div class="wh-tools">',
+        '<button type="button" class="wh-btn" id="wh-zoom-in">放大 ＋</button>',
+        '<button type="button" class="wh-btn" id="wh-zoom-out">缩小 －</button>',
+        '<button type="button" class="wh-btn" id="wh-reset">重置视图</button>',
+        '<span class="wh-tool-hint">滚轮缩放 · 按住拖拽平移 · 点击点位或下方结果条目即在图上定位</span>',
+        '<span class="wh-status" id="wh-status"></span>',
+      '</div>',
       '<div class="map-frame">',
         '<svg id="wh-svg" viewBox="0 0 ' + bm.w + ' ' + bm.h + '" preserveAspectRatio="xMidYMid meet" role="img" aria-label="世界遗产地分布图">',
           '<g class="grat">' + grat.join('') + '</g>',
           '<g class="lands">' + lands + '</g>',
+          '<g id="wh-cases"></g>',
           '<g id="wh-points"></g>',
         '</svg>',
         '<div class="wh-tip" id="wh-tip" hidden></div>',
       '</div>',
-      '<p class="wh-legend"><span class="lg lg-c">文化遗产</span><span class="lg lg-n">自然遗产</span><span class="lg lg-m">混合遗产</span><span class="lg-note">悬停查看遗产地名称、国家、列入年份与官方链接</span></p>',
+      '<div class="wh-detail" id="wh-detail" hidden></div>',
+      '<div class="wh-results-wrap">',
+        '<p class="wh-results-head" id="wh-res-count"></p>',
+        '<ul class="wh-results" id="wh-results"></ul>',
+      '</div>',
+      '<p class="wh-legend"><span class="lg lg-c">文化遗产</span><span class="lg lg-n">自然遗产</span><span class="lg lg-m">混合遗产</span><span class="lg lg-case">站内案例</span><span class="lg-note">悬停查看遗产地名称、国家、列入年份与官方链接</span></p>',
+      '<p class="wh-note">站内案例图层：已核验名录公布坐标的案例 ' + (cs.located || 0) + ' 条以方形标记叠加在图上，点击可查看该案例并进入档案页；其余 ' + (cs.unlocated || 0) + ' 条案例未核验到名录公布坐标，不在图上标注，也不虚构坐标。</p>',
       '<p class="wh-src">数据来源：UNESCO 世界遗产中心《世界遗产名录》XML（whc.unesco.org/en/list/xml）；底图：Natural Earth 1:110m 国界图层。本页是资料平台的可视化索引，遗产地的认定、保护与管理以联合国教科文组织及各缔约国官方公告为准。</p>',
     '</section>',
     '<section>',
       '<h2 class="section-title"><span class="sec-no">02</span>中国相关遗产地索引</h2>',
-      '<p class="section-lede">共 ' + (s.cn || 0) + ' 处，点击可在图上定位；带「站内案例档案」的条目可进一步阅读本平台整理的案例档案与官方来源。</p>',
+      '<p class="section-lede">共 ' + (s.cn || 0) + ' 处，点击条目即在图上定位并放大；带「站内案例档案」的条目可进一步阅读本平台整理的案例档案与官方来源。</p>',
       '<ul class="wh-list">' + cnHtml + '</ul>',
     '</section>'
   ].join(NL);
   return layout({
     title: '全球遗产地图 · 遗产保护与城市更新观察平台',
-    desc: '联合国教科文组织《世界遗产名录》遗产地坐标可视化，可按遗产类型、所属区域与国别筛选，并回溯官方页面与站内案例档案。',
+    desc: '联合国教科文组织《世界遗产名录》遗产地坐标可视化，可按遗产类型、所属区域与国别筛选，并在图上定位、回溯官方页面与站内案例档案。',
     body: body, current: 'map', total: (d.total == null ? 0 : d.total), updated: d.updated,
     head: '<link rel="stylesheet" href="/public/map.css"><script src="/public/map.js" defer></script>'
   });

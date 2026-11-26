@@ -41,6 +41,53 @@
 .lg-m::before { background: #b8860b; }
 .lg-note { margin-left: auto; }
 .wh-src { font-size: 12px; color: var(--muted); margin-top: 10px; line-height: 1.7; }
+/* ---- 视口交互：工具条 / 定位结果 / 详情面板 / 案例图层 ---- */
+.wh-tools { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin: 0 0 12px; }
+.wh-btn {
+  font-family: inherit; font-size: 12px; line-height: 1.6; padding: 6px 12px;
+  border: 1px solid var(--line); border-radius: 4px; background: #fff; color: var(--ink); cursor: pointer;
+}
+.wh-btn:hover { border-color: var(--accent); color: var(--accent); }
+.wh-tool-hint { font-size: 12px; color: var(--muted); }
+.wh-status { margin-left: auto; font-size: 12px; color: var(--muted); font-variant-numeric: tabular-nums; }
+#wh-svg { cursor: grab; touch-action: none; }
+#wh-svg.dragging { cursor: grabbing; }
+#wh-svg .grat line { vector-effect: non-scaling-stroke; }
+#wh-svg .land { vector-effect: non-scaling-stroke; }
+#wh-svg circle { vector-effect: non-scaling-stroke; }
+#wh-svg .cp-mark { fill: #171614; stroke: #fffdf8; stroke-width: 1; vector-effect: non-scaling-stroke; cursor: pointer; }
+#wh-svg .cp-mark.cp-sel { fill: #9c3b2b; stroke: #171614; }
+.wh-detail {
+  margin-top: 10px; padding: 12px 14px; background: #fffdf8;
+  border: 1px solid var(--accent); border-radius: 4px; font-size: 13px; color: var(--ink);
+}
+.wh-d-k { font-size: 11px; letter-spacing: .12em; color: var(--accent); font-weight: 700; margin-bottom: 4px; }
+.wh-detail b { display: block; font-family: var(--serif); font-size: 16px; }
+.wh-d-en { display: block; font-style: italic; color: var(--muted); font-size: 12px; margin-top: 2px; }
+.wh-d-line { display: block; color: var(--muted); font-size: 12px; margin-top: 3px; }
+.wh-d-link { display: inline-block; margin-top: 7px; margin-right: 14px; font-size: 12px; color: var(--accent); }
+.wh-results-wrap { margin-top: 14px; }
+.wh-results-head { margin: 0 0 8px; font-size: 12px; color: var(--muted); }
+.wh-results {
+  list-style: none; margin: 0; padding: 0; display: grid; gap: 6px;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  max-height: 260px; overflow-y: auto; border: 1px solid var(--line); border-radius: 4px; padding: 10px;
+  background: #fffdf8;
+}
+.wh-results:empty { display: none; }
+.wh-res {
+  display: block; width: 100%; text-align: left; font-family: inherit; background: #fff;
+  border: 1px solid var(--line); border-radius: 3px; padding: 6px 9px; cursor: pointer;
+}
+.wh-res:hover { border-color: var(--accent); }
+.wh-res b { display: block; font-family: var(--serif); font-size: 13px; color: var(--ink); }
+.wh-res span { display: block; font-size: 11px; color: var(--muted); margin-top: 1px; }
+.lg-case::before { content: ''; display: inline-block; width: 9px; height: 9px; background: #171614; margin-right: 6px; vertical-align: middle; }
+.wh-note { font-size: 12px; color: var(--muted); margin: 10px 0 0; line-height: 1.7; }
+@media (max-width: 760px) {
+  .wh-status { margin-left: 0; }
+  .wh-results { max-height: 220px; }
+}
 .wh-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); }
 .wh-site {
   display: block; width: 100%; text-align: left; font-family: inherit; background: #fff;
