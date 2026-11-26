@@ -13,7 +13,7 @@
   var resCountEl = document.getElementById('wh-res-count');
   var detEl = document.getElementById('wh-detail');
   var zinEl = document.getElementById('wh-zoom-in');
-  var zoutEl = document.getElementId('wh-zoom-out');
+  var zoutEl = document.getElementById('wh-zoom-out');
   var rstEl = document.getElementById('wh-reset');
   var statEl = document.getElementById('wh-status');
   if (!svg || !g) return;
