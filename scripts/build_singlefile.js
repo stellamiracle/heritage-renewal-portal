@@ -44,6 +44,73 @@ function figData(slug, kind) {
   if (!fs.existsSync(f)) return '';
   return 'data:image/svg+xml;base64,' + fs.readFileSync(f).toString('base64');
 }
+
+/* 案例现场照片：单文件版必须自包含，照片以 data URI 内嵌，不依赖外部 public/photos */
+const PHOTODIR = path.join(B, 'public', 'photos');
+const OPTDIR = path.join(B, 'dist-single', '.photo_opt');
+let FFMPEG = null;
+function ffmpegBin() {
+  if (FFMPEG !== null) return FFMPEG;
+  FFMPEG = '';
+  const cands = ['ffmpeg'];
+  const local = process.env.LOCALAPPDATA || '';
+  if (local) {
+    const pk = path.join(local, 'Microsoft', 'WinGet', 'Packages');
+    try {
+      fs.readdirSync(pk).forEach(function (d) {
+        if (/ffmpeg/i.test(d)) {
+          const b1 = path.join(pk, d, 'bin', 'ffmpeg.exe');
+          if (fs.existsSync(b1)) cands.push(b1);
+          const b2 = path.join(pk, d, 'ffmpeg-9.0.2-full_build', 'bin', 'ffmpeg.exe');
+          if (fs.existsSync(b2)) cands.push(b2);
+        }
+      });
+    } catch (e) { /* 忽略：找不到就用原图 */ }
+  }
+  for (let i = 0; i < cands.length; i++) {
+    try {
+      require('child_process').execFileSync(cands[i], ['-version'], { stdio: 'ignore' });
+      FFMPEG = cands[i];
+      break;
+    } catch (e) { /* 试下一个 */ }
+  }
+  return FFMPEG;
+}
+/* 单文件版压缩副本：宽度上限 1200px、q:v 5；ffmpeg 不可用时直接用原图 */
+function photoBytes(slug, file, srcFile) {
+  const bin = ffmpegBin();
+  if (!bin) return fs.readFileSync(srcFile);
+  const outDir = path.join(OPTDIR, slug);
+  const out = path.join(outDir, file);
+  try {
+    if (fs.existsSync(out) &&
+        fs.statSync(out).mtimeMs >= fs.statSync(srcFile).mtimeMs) {
+      return fs.readFileSync(out);
+    }
+    fs.mkdirSync(outDir, { recursive: true });
+    require('child_process').execFileSync(bin, ['-hide_banner', '-loglevel', 'error', '-y',
+      '-i', srcFile, '-vf', "scale='min(1200,iw)':-2", '-q:v', '5', '-frames:v', '1', out]);
+    return fs.readFileSync(out);
+  } catch (e) {
+    try { return fs.readFileSync(out); } catch (e2) { return fs.readFileSync(srcFile); }
+  }
+}
+function photoList(e) {
+  const ps = (Array.isArray(e.photos) ? e.photos : []).filter(function (p) { return p && p.src; });
+  if (!ps.length) return [];
+  const out = [];
+  ps.forEach(function (p) {
+    const file = p.file || String(p.src).split('/').pop();
+    const srcFile = path.join(PHOTODIR, e.slug, file);
+    if (!fs.existsSync(srcFile)) return;
+    const buf = photoBytes(e.slug, file, srcFile);
+    out.push({
+      src: 'data:image/jpeg;base64,' + buf.toString('base64'),
+      orig: p.orig || '', w: p.w || 0, h: p.h || 0
+    });
+  });
+  return out;
+}
 const all = db.listEntries({ visibility: 'all', limit: 2000 });
 const pub = all.filter(function (e) { return e.visibility === 'public'; });
 const entries = pub.map(function (e) {
@@ -60,6 +127,7 @@ const entries = pub.map(function (e) {
   }
   return {
     slug: e.slug, title: e.title, type: e.type, fig: fig,
+    photos: photoList(e),
     type_label: e.type_label || '', issuer: e.issuer || '',
     doc_no: e.doc_no || '', publish_date: e.publish_date || '',
     effective_date: e.effective_date || '', status: e.status || '',
@@ -108,6 +176,8 @@ fs.writeFileSync(path.join(OUT, name), html, 'utf8');
 fs.writeFileSync(path.join(WS, name), html, 'utf8');
 const report = [
   'entries=' + entries.length,
+  'photo_entries=' + entries.filter(function (e) { return e.photos && e.photos.length; }).length,
+  'photo_count=' + entries.reduce(function (n, e) { return n + (e.photos ? e.photos.length : 0); }, 0),
   'bytes=' + Buffer.byteLength(html),
   'css_bytes=' + Buffer.byteLength(css),
   'app_bytes=' + Buffer.byteLength(app),

@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-26T04:18:39.888Z",
+  "generated_at": "2026-11-26T08:58:11.093Z",
   "count": 141,
   "entries": [
     {
@@ -31,6 +31,7 @@
       "lat": null,
       "lon": null,
       "wh_id": null,
+      "photos": [],
       "type_label": "动态"
     },
     {
@@ -63,6 +64,7 @@
       "lat": null,
       "lon": null,
       "wh_id": null,
+      "photos": [],
       "type_label": "动态"
     },
     {
@@ -95,6 +97,7 @@
       "lat": null,
       "lon": null,
       "wh_id": null,
+      "photos": [],
       "type_label": "动态"
     },
     {
@@ -133,6 +136,7 @@
       "lat": null,
       "lon": null,
       "wh_id": null,
+      "photos": [],
       "type_label": "动态"
     },
     {
@@ -171,6 +175,7 @@
       "lat": null,
       "lon": null,
       "wh_id": null,
+      "photos": [],
       "type_label": "动态"
     },
     {
@@ -205,6 +210,7 @@
       "lat": null,
       "lon": null,
       "wh_id": null,
+      "photos": [],
       "type_label": "法规"
     },
     {
@@ -243,6 +249,7 @@
       "lat": null,
       "lon": null,
       "wh_id": null,
+      "photos": [],
       "type_label": "动态"
     },
     {
@@ -282,6 +289,7 @@
       "lat": null,
       "lon": null,
       "wh_id": "",
+      "photos": [],
       "type_label": "动态"
     },
     {
@@ -313,6 +321,7 @@
       "lat": null,
       "lon": null,
       "wh_id": null,
+      "photos": [],
       "type_label": "动态"
     },
     {
@@ -355,6 +364,7 @@
       "lat": null,
       "lon": null,
       "wh_id": null,
+      "photos": [],
       "type_label": "政策"
     },
     {
@@ -386,6 +396,7 @@
       "lat": null,
       "lon": null,
       "wh_id": null,
+      "photos": [],
       "type_label": "动态"
     },
     {
@@ -426,6 +437,7 @@
       "lat": null,
       "lon": null,
       "wh_id": null,
+      "photos": [],
       "type_label": "政策"
     },
     {
@@ -457,6 +469,7 @@
       "lat": null,
       "lon": null,
       "wh_id": null,
+      "photos": [],
       "type_label": "动态"
     },
     {
@@ -492,6 +505,7 @@
       "lat": null,
       "lon": null,
       "wh_id": null,
+      "photos": [],
       "type_label": "政策"
     },
     {
@@ -536,6 +550,7 @@
       "lat": null,
       "lon": null,
       "wh_id": null,
+      "photos": [],
       "type_label": "政策"
     },
     {
@@ -567,6 +582,7 @@
       "lat": null,
       "lon": null,
       "wh_id": null,
+      "photos": [],
       "type_label": "动态"
     },
     {
@@ -598,6 +614,7 @@
       "lat": null,
       "lon": null,
       "wh_id": null,
+      "photos": [],
       "type_label": "动态"
     },
     {
@@ -629,6 +646,7 @@
       "lat": null,
       "lon": null,
       "wh_id": null,
+      "photos": [],
       "type_label": "动态"
     },
     {
@@ -660,6 +678,7 @@
       "lat": null,
       "lon": null,
       "wh_id": null,
+      "photos": [],
       "type_label": "动态"
     },
     {
@@ -693,6 +712,7 @@
       "lat": null,
       "lon": null,
       "wh_id": null,
+      "photos": [],
       "type_label": "政策"
     },
     {
@@ -729,10 +749,47 @@
       "visibility": "public",
       "author": "工作区核验导入",
       "created_at": "2026-11-19T07:28:16.000Z",
-      "updated_at": "2026-11-19T07:28:16.000Z",
+      "updated_at": "2026-11-26T08:37:04.741Z",
       "lat": null,
       "lon": null,
       "wh_id": null,
+      "photos": [
+        {
+          "file": "01.jpg",
+          "src": "/public/photos/case-20260723-e444b19b/01.jpg",
+          "orig": "https://pics7.baidu.com/feed/aa64034f78f0f7368ac56febbe79bb0beac413da.jpeg@f_auto?token=6879a2fbfa436e5e195ee8b5a5a08008",
+          "w": 800,
+          "h": 600
+        },
+        {
+          "file": "02.jpg",
+          "src": "/public/photos/case-20260723-e444b19b/02.jpg",
+          "orig": "https://pics6.baidu.com/feed/a5c27d1ed21b0ef4987b388b69e859c880cb3e16.jpeg@f_auto?token=74c3a5d0efa8993286a874dac29ca38e",
+          "w": 800,
+          "h": 533
+        },
+        {
+          "file": "03.jpg",
+          "src": "/public/photos/case-20260723-e444b19b/03.jpg",
+          "orig": "https://pics1.baidu.com/feed/dbb44aed2e738bd485a898dc15a78fc4267ff914.jpeg@f_auto?token=9b6d6205b37dca9b9c329b0163120275",
+          "w": 800,
+          "h": 533
+        },
+        {
+          "file": "04.jpg",
+          "src": "/public/photos/case-20260723-e444b19b/04.jpg",
+          "orig": "https://pics2.baidu.com/feed/eac4b74543a98226e94d02d13faeb1134b90eb72.jpeg@f_auto?token=4a07b738cc45188be22181bf25e0a914",
+          "w": 800,
+          "h": 600
+        },
+        {
+          "file": "05.jpg",
+          "src": "/public/photos/case-20260723-e444b19b/05.jpg",
+          "orig": "https://pics6.baidu.com/feed/29381f30e924b899cf01b6b7da2a15870a7bf63b.jpeg@f_auto?token=b04e5d8a3e245d0b2f5bfdbb8fb0cee0",
+          "w": 800,
+          "h": 600
+        }
+      ],
       "type_label": "案例"
     },
     {
@@ -771,6 +828,7 @@
       "lat": null,
       "lon": null,
       "wh_id": null,
+      "photos": [],
       "type_label": "政策"
     },
     {
@@ -806,6 +864,7 @@
       "lat": null,
       "lon": null,
       "wh_id": null,
+      "photos": [],
       "type_label": "政策"
     },
     {
@@ -840,6 +899,7 @@
       "lat": null,
       "lon": null,
       "wh_id": null,
+      "photos": [],
       "type_label": "政策"
     },
     {
@@ -877,6 +937,7 @@
       "lat": null,
       "lon": null,
       "wh_id": null,
+      "photos": [],
       "type_label": "动态"
     },
     {
@@ -911,6 +972,7 @@
       "lat": null,
       "lon": null,
       "wh_id": null,
+      "photos": [],
       "type_label": "政策"
     },
     {
@@ -946,6 +1008,7 @@
       "lat": null,
       "lon": null,
       "wh_id": null,
+      "photos": [],
       "type_label": "政策"
     },
     {
@@ -980,10 +1043,61 @@
       "visibility": "public",
       "author": "种子导入",
       "created_at": "2026-11-16T09:05:28.353Z",
-      "updated_at": "2026-11-16T09:05:28.353Z",
+      "updated_at": "2026-11-26T08:37:04.741Z",
       "lat": null,
       "lon": null,
       "wh_id": null,
+      "photos": [
+        {
+          "file": "01.jpg",
+          "src": "/public/photos/case-20260406-4359aa8c/01.jpg",
+          "orig": "https://www.news.cn/local/20260406/07652a19b0874253869119f03752f1db/2026040607652a19b0874253869119f03752f1db_XxjdzbC000004_20260406_CBMFN0A011.gif",
+          "w": 465,
+          "h": 827
+        },
+        {
+          "file": "02.jpg",
+          "src": "/public/photos/case-20260406-4359aa8c/02.jpg",
+          "orig": "https://www.news.cn/local/20260406/07652a19b0874253869119f03752f1db/2026040607652a19b0874253869119f03752f1db_7be1de91a2494428a87a04ef5a79ee9a.jpg",
+          "w": 1011,
+          "h": 721
+        },
+        {
+          "file": "03.jpg",
+          "src": "/public/photos/case-20260406-4359aa8c/03.jpg",
+          "orig": "https://www.news.cn/local/20260406/07652a19b0874253869119f03752f1db/2026040607652a19b0874253869119f03752f1db_39f9dec77e424718ba5b7b401e72e9a1.jpg",
+          "w": 998,
+          "h": 696
+        },
+        {
+          "file": "04.jpg",
+          "src": "/public/photos/case-20260406-4359aa8c/04.jpg",
+          "orig": "https://www.news.cn/local/20260406/07652a19b0874253869119f03752f1db/2026040607652a19b0874253869119f03752f1db_1e796b97227e436fad26dc10611372e1.jpg",
+          "w": 1024,
+          "h": 712
+        },
+        {
+          "file": "05.jpg",
+          "src": "/public/photos/case-20260406-4359aa8c/05.jpg",
+          "orig": "https://www.news.cn/local/20260406/07652a19b0874253869119f03752f1db/2026040607652a19b0874253869119f03752f1db_92346063c3544b8d82b42083b85d36fd.JPG",
+          "w": 1024,
+          "h": 775
+        },
+        {
+          "file": "06.jpg",
+          "src": "/public/photos/case-20260406-4359aa8c/06.jpg",
+          "orig": "https://www.news.cn/local/20260406/07652a19b0874253869119f03752f1db/2026040607652a19b0874253869119f03752f1db_b52c5a895b0a4bb1915a815e65d3f25d.jpg",
+          "w": 1024,
+          "h": 747
+        },
+        {
+          "file": "07.jpg",
+          "src": "/public/photos/case-20260406-4359aa8c/07.jpg",
+          "orig": "https://www.news.cn/local/20260406/07652a19b0874253869119f03752f1db/2026040607652a19b0874253869119f03752f1db_634a258eb4c24573881a2c3c19d2f207.jpg",
+          "w": 1004,
+          "h": 667
+        }
+      ],
       "type_label": "案例"
     },
     {
@@ -1023,10 +1137,68 @@
       "visibility": "public",
       "author": "工作区核验导入",
       "created_at": "2026-11-25T09:20:57.507Z",
-      "updated_at": "2026-11-25T09:20:57.507Z",
+      "updated_at": "2026-11-26T08:37:04.741Z",
       "lat": null,
       "lon": null,
       "wh_id": "",
+      "photos": [
+        {
+          "file": "01.jpg",
+          "src": "/public/photos/case-20260403-98ec3962/01.jpg",
+          "orig": "https://mmbiz.qpic.cn/mmbiz_jpg/QzvtoFtDTmlibIHEPflkfKHC2EaRAXtl48hiajBsqeMeXFdBm7v9IZ2Ss37SwSsPqtfzK7vVmy8vdNZNCTeswclrSFqVYxCIlcLkWYuerWTkY/640?wx_fmt=jpeg",
+          "w": 1080,
+          "h": 276
+        },
+        {
+          "file": "02.jpg",
+          "src": "/public/photos/case-20260403-98ec3962/02.jpg",
+          "orig": "https://mmbiz.qpic.cn/mmbiz_png/QzvtoFtDTmn44e9uwLp7lia5Jalf9sGALd6iaVY1TmMENQGPNtXFlQw2KhLp4XE3CusxpleCMcNG374XLAEeCRlX3n2yv6YurqhKUz4MjWPgc/640?wx_fmt=png",
+          "w": 1080,
+          "h": 288
+        },
+        {
+          "file": "03.jpg",
+          "src": "/public/photos/case-20260403-98ec3962/03.jpg",
+          "orig": "https://mmbiz.qpic.cn/mmbiz_png/QzvtoFtDTmlOwb5L3Gmf0R0RwojloeiauFLBrcpibtfjEU9Axh7C1fyBzoJkicn3qsQGBjyunQc60sqLlFGWEX8ID2SLic0T64iafEkTU2TrqJoA/640?wx_fmt=png&from=appmsg",
+          "w": 1080,
+          "h": 560
+        },
+        {
+          "file": "04.jpg",
+          "src": "/public/photos/case-20260403-98ec3962/04.jpg",
+          "orig": "https://mmbiz.qpic.cn/sz_mmbiz_jpg/QzvtoFtDTmmO9MLnrkNia8X1pBicEWsJQCGlicB52YeUtBgjnibf0wyNRGeaSw6vyXagwHyMeicEFicRhD7mrLFkCiao545miaNC4hHcMxHZOozmYxc/640?wx_fmt=jpeg",
+          "w": 605,
+          "h": 908
+        },
+        {
+          "file": "05.jpg",
+          "src": "/public/photos/case-20260403-98ec3962/05.jpg",
+          "orig": "https://mmbiz.qpic.cn/sz_mmbiz_jpg/QzvtoFtDTmnCpo4wEnRibewEKDpYEI61AykIKaPk4r8DWIEAnciaCYicyPgHzLFjWCYvZgmTTpcGicJNIfu6SSBzeGY0S31qV2nSZxibNh38WWmA/640?wx_fmt=jpeg",
+          "w": 604,
+          "h": 906
+        },
+        {
+          "file": "06.jpg",
+          "src": "/public/photos/case-20260403-98ec3962/06.jpg",
+          "orig": "https://mmbiz.qpic.cn/mmbiz_jpg/QzvtoFtDTmkJSZJ1VP1ZkkWqDbicyKuEcpyXgDJEJmv5wicx1NVzbjfCNWYiaQfLZJ5yNhuFW7ibeBrYpibsyYfUZdWS7j52XlmUERK8lFDib8xDw/640?wx_fmt=jpeg",
+          "w": 605,
+          "h": 908
+        },
+        {
+          "file": "07.jpg",
+          "src": "/public/photos/case-20260403-98ec3962/07.jpg",
+          "orig": "https://mmbiz.qpic.cn/sz_mmbiz_jpg/QzvtoFtDTmlYkfibThEEJhcGIKQcNugQaIwzptqlrN0XKa0aEnPzmlmYSNiaftydkuxWF6iaPVtyYudR84fe5BJuHicFn5FibAiaZs9ATApN458LU/640?wx_fmt=jpeg",
+          "w": 607,
+          "h": 911
+        },
+        {
+          "file": "08.jpg",
+          "src": "/public/photos/case-20260403-98ec3962/08.jpg",
+          "orig": "https://mmbiz.qpic.cn/sz_mmbiz_jpg/QzvtoFtDTmkbEuBbHuJ1XwRat5EHg8Vd1qDV9rYHK7XkWyMLIiaVpiadPoB4P2DBf7mwuwibY6Qmq9wbVqiaRNlbIa0EwNCy5ysFvcveDl4uy2k/640?wx_fmt=jpeg&from=appmsg",
+          "w": 1080,
+          "h": 1328
+        }
+      ],
       "type_label": "案例"
     },
     {
@@ -1060,6 +1232,7 @@
       "lat": null,
       "lon": null,
       "wh_id": null,
+      "photos": [],
       "type_label": "政策"
     },
     {
@@ -1094,6 +1267,7 @@
       "lat": null,
       "lon": null,
       "wh_id": null,
+      "photos": [],
       "type_label": "法规"
     },
     {
@@ -1129,6 +1303,7 @@
       "lat": null,
       "lon": null,
       "wh_id": null,
+      "photos": [],
       "type_label": "政策"
     },
     {
@@ -1163,6 +1338,7 @@
       "lat": null,
       "lon": null,
       "wh_id": null,
+      "photos": [],
       "type_label": "法规"
     },
     {
@@ -1196,6 +1372,7 @@
       "lat": null,
       "lon": null,
       "wh_id": null,
+      "photos": [],
       "type_label": "政策"
     },
     {
@@ -1231,6 +1408,7 @@
       "lat": null,
       "lon": null,
       "wh_id": null,
+      "photos": [],
       "type_label": "政策"
     },
     {
@@ -1264,6 +1442,7 @@
       "lat": null,
       "lon": null,
       "wh_id": null,
+      "photos": [],
       "type_label": "政策"
     },
     {
@@ -1297,6 +1476,7 @@
       "lat": null,
       "lon": null,
       "wh_id": null,
+      "photos": [],
       "type_label": "政策"
     },
     {
@@ -1331,6 +1511,7 @@
       "lat": null,
       "lon": null,
       "wh_id": null,
+      "photos": [],
       "type_label": "法规"
     },
     {
@@ -1364,6 +1545,7 @@
       "lat": null,
       "lon": null,
       "wh_id": null,
+      "photos": [],
       "type_label": "政策"
     },
     {
@@ -1398,6 +1580,7 @@
       "lat": null,
       "lon": null,
       "wh_id": null,
+      "photos": [],
       "type_label": "法规"
     },
     {
@@ -1432,6 +1615,7 @@
       "lat": null,
       "lon": null,
       "wh_id": null,
+      "photos": [],
       "type_label": "政策"
     },
     {
@@ -1466,6 +1650,7 @@
       "lat": null,
       "lon": null,
       "wh_id": null,
+      "photos": [],
       "type_label": "政策"
     },
     {
@@ -1500,6 +1685,7 @@
       "lat": null,
       "lon": null,
       "wh_id": null,
+      "photos": [],
       "type_label": "法规"
     },
     {
@@ -1534,6 +1720,7 @@
       "lat": null,
       "lon": null,
       "wh_id": null,
+      "photos": [],
       "type_label": "法规"
     },
     {
@@ -1568,6 +1755,7 @@
       "lat": null,
       "lon": null,
       "wh_id": null,
+      "photos": [],
       "type_label": "法规"
     },
     {
@@ -1606,6 +1794,7 @@
       "lat": null,
       "lon": null,
       "wh_id": null,
+      "photos": [],
       "type_label": "政策"
     },
     {
@@ -1641,6 +1830,7 @@
       "lat": null,
       "lon": null,
       "wh_id": null,
+      "photos": [],
       "type_label": "政策"
     },
     {
@@ -1674,6 +1864,7 @@
       "lat": null,
       "lon": null,
       "wh_id": null,
+      "photos": [],
       "type_label": "政策"
     },
     {
@@ -1707,6 +1898,7 @@
       "lat": null,
       "lon": null,
       "wh_id": null,
+      "photos": [],
       "type_label": "政策"
     },
     {
@@ -1740,6 +1932,7 @@
       "lat": null,
       "lon": null,
       "wh_id": null,
+      "photos": [],
       "type_label": "政策"
     },
     {
@@ -1774,6 +1967,7 @@
       "lat": null,
       "lon": null,
       "wh_id": null,
+      "photos": [],
       "type_label": "法规"
     },
     {
@@ -1807,6 +2001,7 @@
       "lat": null,
       "lon": null,
       "wh_id": null,
+      "photos": [],
       "type_label": "政策"
     },
     {
@@ -1840,6 +2035,7 @@
       "lat": null,
       "lon": null,
       "wh_id": null,
+      "photos": [],
       "type_label": "政策"
     },
     {
@@ -1873,6 +2069,7 @@
       "lat": null,
       "lon": null,
       "wh_id": null,
+      "photos": [],
       "type_label": "政策"
     },
     {
@@ -1908,10 +2105,68 @@
       "visibility": "public",
       "author": "工作区核验导入",
       "created_at": "2026-11-19T07:28:16.000Z",
-      "updated_at": "2026-11-25T09:20:57.384Z",
+      "updated_at": "2026-11-26T08:37:04.741Z",
       "lat": null,
       "lon": null,
       "wh_id": null,
+      "photos": [
+        {
+          "file": "01.jpg",
+          "src": "/public/photos/case-20250121-d2f5d42d/01.jpg",
+          "orig": "https://pics6.baidu.com/feed/377adab44aed2e73bb9b19bf77b9e78486d6fa7f.png@f_auto?token=99e0ce1927fbd7f93d01137455eda4d2",
+          "w": 1155,
+          "h": 180
+        },
+        {
+          "file": "02.jpg",
+          "src": "/public/photos/case-20250121-d2f5d42d/02.jpg",
+          "orig": "https://pics2.baidu.com/feed/8694a4c27d1ed21b709105a45cd69bcb50da3f5a.jpeg@f_auto?token=e344f9c33c410b49d834459439acb993",
+          "w": 900,
+          "h": 600
+        },
+        {
+          "file": "03.jpg",
+          "src": "/public/photos/case-20250121-d2f5d42d/03.jpg",
+          "orig": "https://pics3.baidu.com/feed/810a19d8bc3eb13592f9557556a6eedcfc1f440e.jpeg@f_auto?token=3141226127762ed539016eda09ad6f9f",
+          "w": 850,
+          "h": 568
+        },
+        {
+          "file": "04.jpg",
+          "src": "/public/photos/case-20250121-d2f5d42d/04.jpg",
+          "orig": "https://pics0.baidu.com/feed/00e93901213fb80ec7fcdf85c7696921b83894ff.jpeg@f_auto?token=dd95f345f17922b470149f0965dcdc81",
+          "w": 900,
+          "h": 600
+        },
+        {
+          "file": "05.jpg",
+          "src": "/public/photos/case-20250121-d2f5d42d/05.jpg",
+          "orig": "https://pics2.baidu.com/feed/b7003af33a87e950d6ab8225e180154cfaf2b407.jpeg@f_auto?token=465be4a29c43aceb04e2151c58364742",
+          "w": 900,
+          "h": 675
+        },
+        {
+          "file": "06.jpg",
+          "src": "/public/photos/case-20250121-d2f5d42d/06.jpg",
+          "orig": "https://pics1.baidu.com/feed/5882b2b7d0a20cf42c61d65c87b10d39aeaf9983.jpeg@f_auto?token=e387612544f2a258f69f749c12291605",
+          "w": 900,
+          "h": 600
+        },
+        {
+          "file": "07.jpg",
+          "src": "/public/photos/case-20250121-d2f5d42d/07.jpg",
+          "orig": "https://pics5.baidu.com/feed/42166d224f4a20a4229d96b461eade2d730ed00e.jpeg@f_auto?token=712fbed60ce25991594f3e6fb244fefa",
+          "w": 900,
+          "h": 601
+        },
+        {
+          "file": "08.jpg",
+          "src": "/public/photos/case-20250121-d2f5d42d/08.jpg",
+          "orig": "https://pics2.baidu.com/feed/d1160924ab18972b917951a817753d869f510a5c.jpeg@f_auto?token=93c8ac970221c890b774dbd8160c772f",
+          "w": 900,
+          "h": 600
+        }
+      ],
       "type_label": "案例"
     },
     {
@@ -1945,6 +2200,7 @@
       "lat": null,
       "lon": null,
       "wh_id": null,
+      "photos": [],
       "type_label": "政策"
     },
     {
@@ -1978,6 +2234,7 @@
       "lat": null,
       "lon": null,
       "wh_id": null,
+      "photos": [],
       "type_label": "政策"
     },
     {
@@ -2011,6 +2268,7 @@
       "lat": null,
       "lon": null,
       "wh_id": null,
+      "photos": [],
       "type_label": "政策"
     },
     {
@@ -2045,10 +2303,68 @@
       "visibility": "public",
       "author": "种子导入",
       "created_at": "2026-11-16T09:05:28.286Z",
-      "updated_at": "2026-11-16T09:05:28.286Z",
+      "updated_at": "2026-11-26T08:37:04.741Z",
       "lat": null,
       "lon": null,
       "wh_id": null,
+      "photos": [
+        {
+          "file": "01.jpg",
+          "src": "/public/photos/case-20241217-1d991d1c/01.jpg",
+          "orig": "https://jcdn.xhby.net/dams-res/editing/image/202412/09/4cKwIVwAjWPPyvm2bbCf6pJd.jpg?image_process=resize,w_800/format,jpg",
+          "w": 800,
+          "h": 555
+        },
+        {
+          "file": "02.jpg",
+          "src": "/public/photos/case-20241217-1d991d1c/02.jpg",
+          "orig": "https://jcdn.xhby.net/dams-res/editing/image/202607/03/zreNDKbueQmy6V1LD7VI3ASH.png?image_process=resize,w_860/format,jpg",
+          "w": 860,
+          "h": 483
+        },
+        {
+          "file": "03.jpg",
+          "src": "/public/photos/case-20241217-1d991d1c/03.jpg",
+          "orig": "https://jcdn.xhby.net/dams-res/editing/image/202607/03/M6hLexe25fDLbb3KgdfHhAV2.png?image_process=resize,w_860/format,jpg",
+          "w": 860,
+          "h": 483
+        },
+        {
+          "file": "04.jpg",
+          "src": "/public/photos/case-20241217-1d991d1c/04.jpg",
+          "orig": "https://jcdn.xhby.net/dams-res/editing/image/202605/09/7lz98V7jKz0GDnLN64tm3Rmb.png?image_process=resize,w_320/format,jpg",
+          "w": 320,
+          "h": 180
+        },
+        {
+          "file": "05.jpg",
+          "src": "/public/photos/case-20241217-1d991d1c/05.jpg",
+          "orig": "https://jcdn.xhby.net/dams-res/editing/image/202603/31/byJwjOUEDfDEJSEL6GsrqLmM.png?image_process=resize,w_860/format,jpg",
+          "w": 860,
+          "h": 483
+        },
+        {
+          "file": "06.jpg",
+          "src": "/public/photos/case-20241217-1d991d1c/06.jpg",
+          "orig": "https://jcdn.xhby.net/dams-res/editing/image/202311/17/d13gNGZ7E3mFdBEWSLR9R2cW.png?image_process=resize,w_860/format,jpg",
+          "w": 860,
+          "h": 483
+        },
+        {
+          "file": "07.jpg",
+          "src": "/public/photos/case-20241217-1d991d1c/07.jpg",
+          "orig": "https://jcdn.xhby.net/dams-res/editing/image/202608/10/C7a9JyuqGGTaBRvQAVxfbOIZ.png",
+          "w": 1042,
+          "h": 333
+        },
+        {
+          "file": "08.jpg",
+          "src": "/public/photos/case-20241217-1d991d1c/08.jpg",
+          "orig": "https://jcdn.xhby.net/dams-res/editing/image/202408/01/CCHsB0BJqMjuTs6gwW6IKfjf.jpeg?image_process=resize,w_860/format,jpg",
+          "w": 860,
+          "h": 483
+        }
+      ],
       "type_label": "案例"
     },
     {
@@ -2082,6 +2398,7 @@
       "lat": null,
       "lon": null,
       "wh_id": null,
+      "photos": [],
       "type_label": "政策"
     },
     {
@@ -2123,6 +2440,7 @@
       "lat": null,
       "lon": null,
       "wh_id": null,
+      "photos": [],
       "type_label": "案例"
     },
     {
@@ -2161,6 +2479,7 @@
       "lat": null,
       "lon": null,
       "wh_id": null,
+      "photos": [],
       "type_label": "政策"
     },
     {
@@ -2196,6 +2515,7 @@
       "lat": 3.8042916667,
       "lon": 113.7807666667,
       "wh_id": "1014",
+      "photos": [],
       "type_label": "案例"
     },
     {
@@ -2231,6 +2551,7 @@
       "lat": 39.8897222222,
       "lon": 102.2894444444,
       "wh_id": "1638",
+      "photos": [],
       "type_label": "案例"
     },
     {
@@ -2266,6 +2587,7 @@
       "lat": null,
       "lon": null,
       "wh_id": null,
+      "photos": [],
       "type_label": "政策"
     },
     {
@@ -2300,6 +2622,7 @@
       "lat": null,
       "lon": null,
       "wh_id": null,
+      "photos": [],
       "type_label": "政策"
     },
     {
@@ -2334,6 +2657,7 @@
       "lat": null,
       "lon": null,
       "wh_id": null,
+      "photos": [],
       "type_label": "法规"
     },
     {
@@ -2367,6 +2691,7 @@
       "lat": null,
       "lon": null,
       "wh_id": null,
+      "photos": [],
       "type_label": "政策"
     },
     {
@@ -2405,6 +2730,7 @@
       "lat": null,
       "lon": null,
       "wh_id": null,
+      "photos": [],
       "type_label": "政策"
     },
     {
@@ -2439,6 +2765,7 @@
       "lat": null,
       "lon": null,
       "wh_id": null,
+      "photos": [],
       "type_label": "法规"
     },
     {
@@ -2473,6 +2800,7 @@
       "lat": null,
       "lon": null,
       "wh_id": null,
+      "photos": [],
       "type_label": "法规"
     },
     {
@@ -2507,6 +2835,7 @@
       "lat": null,
       "lon": null,
       "wh_id": null,
+      "photos": [],
       "type_label": "法规"
     },
     {
@@ -2541,6 +2870,7 @@
       "lat": null,
       "lon": null,
       "wh_id": null,
+      "photos": [],
       "type_label": "政策"
     },
     {
@@ -2576,6 +2906,7 @@
       "lat": 22.1841666667,
       "lon": 100.0075,
       "wh_id": "1665",
+      "photos": [],
       "type_label": "案例"
     },
     {
@@ -2612,10 +2943,33 @@
       "visibility": "public",
       "author": "工作区核验导入",
       "created_at": "2026-11-19T07:28:16.000Z",
-      "updated_at": "2026-11-19 07:33:35",
+      "updated_at": "2026-11-26T08:37:04.741Z",
       "lat": null,
       "lon": null,
       "wh_id": null,
+      "photos": [
+        {
+          "file": "01.jpg",
+          "src": "/public/photos/case-20231129-f0d36ee4/01.jpg",
+          "orig": "https://www.fuzhou.gov.cn/zgfzzt/lswhmcgwh/zwgk/ztzl/bhqy/202311/W020231129402372459903.jpg",
+          "w": 2666,
+          "h": 1279
+        },
+        {
+          "file": "02.jpg",
+          "src": "/public/photos/case-20231129-f0d36ee4/02.jpg",
+          "orig": "https://www.fuzhou.gov.cn/zgfzzt/lswhmcgwh/zwgk/ztzl/bhqy/202311/W020231129402373050290.jpg",
+          "w": 1920,
+          "h": 1280
+        },
+        {
+          "file": "03.jpg",
+          "src": "/public/photos/case-20231129-f0d36ee4/03.jpg",
+          "orig": "https://www.fuzhou.gov.cn/zgfzzt/lswhmcgwh/zwgk/ztzl/bhqy/202311/W020231129402373485446.jpg",
+          "w": 2000,
+          "h": 1125
+        }
+      ],
       "type_label": "案例"
     },
     {
@@ -2650,6 +3004,7 @@
       "lat": null,
       "lon": null,
       "wh_id": null,
+      "photos": [],
       "type_label": "政策"
     },
     {
@@ -2683,6 +3038,7 @@
       "lat": null,
       "lon": null,
       "wh_id": null,
+      "photos": [],
       "type_label": "政策"
     },
     {
@@ -2717,6 +3073,7 @@
       "lat": null,
       "lon": null,
       "wh_id": null,
+      "photos": [],
       "type_label": "法规"
     },
     {
@@ -2751,6 +3108,7 @@
       "lat": null,
       "lon": null,
       "wh_id": null,
+      "photos": [],
       "type_label": "法规"
     },
     {
@@ -2786,6 +3144,7 @@
       "lat": 24.7102777778,
       "lon": 118.444166667,
       "wh_id": "1561",
+      "photos": [],
       "type_label": "案例"
     },
     {
@@ -2820,6 +3179,7 @@
       "lat": null,
       "lon": null,
       "wh_id": null,
+      "photos": [],
       "type_label": "法规"
     },
     {
@@ -2855,6 +3215,7 @@
       "lat": null,
       "lon": null,
       "wh_id": null,
+      "photos": [],
       "type_label": "政策"
     },
     {
@@ -2889,6 +3250,7 @@
       "lat": null,
       "lon": null,
       "wh_id": null,
+      "photos": [],
       "type_label": "法规"
     },
     {
@@ -2923,6 +3285,7 @@
       "lat": null,
       "lon": null,
       "wh_id": null,
+      "photos": [],
       "type_label": "法规"
     },
     {
@@ -2958,6 +3321,7 @@
       "lat": 31.5129166667,
       "lon": 121.999388889,
       "wh_id": "1606",
+      "photos": [],
       "type_label": "案例"
     },
     {
@@ -2993,6 +3357,7 @@
       "lat": 30.39555,
       "lon": 119.990827778,
       "wh_id": "1592",
+      "photos": [],
       "type_label": "案例"
     },
     {
@@ -3028,6 +3393,7 @@
       "lat": 27.8955555556,
       "lon": 108.68,
       "wh_id": "1559",
+      "photos": [],
       "type_label": "案例"
     },
     {
@@ -3063,6 +3429,7 @@
       "lat": 24.4475,
       "lon": 118.0619444444,
       "wh_id": "1541",
+      "photos": [],
       "type_label": "案例"
     },
     {
@@ -3098,6 +3465,7 @@
       "lat": 35.3802777778,
       "lon": 92.4391666667,
       "wh_id": "1540",
+      "photos": [],
       "type_label": "案例"
     },
     {
@@ -3133,6 +3501,7 @@
       "lat": 31.4630555556,
       "lon": 110.509166667,
       "wh_id": "1509",
+      "photos": [],
       "type_label": "案例"
     },
     {
@@ -3168,6 +3537,7 @@
       "lat": 22.2555555556,
       "lon": 107.031388889,
       "wh_id": "1508",
+      "photos": [],
       "type_label": "案例"
     },
     {
@@ -3203,6 +3573,7 @@
       "lat": 37.9116666667,
       "lon": 27.3336111111,
       "wh_id": "1018",
+      "photos": [],
       "type_label": "案例"
     },
     {
@@ -3238,6 +3609,7 @@
       "lat": 27.8116666667,
       "lon": 106.8169444444,
       "wh_id": "1474",
+      "photos": [],
       "type_label": "案例"
     },
     {
@@ -3273,6 +3645,7 @@
       "lat": 29.8747222222,
       "lon": 121.557222222,
       "wh_id": "1443",
+      "photos": [],
       "type_label": "案例"
     },
     {
@@ -3308,6 +3681,7 @@
       "lat": 33.1588888889,
       "lon": 107.291111111,
       "wh_id": "1442",
+      "photos": [],
       "type_label": "案例"
     },
     {
@@ -3343,6 +3717,7 @@
       "lat": 41.9683333333,
       "lon": 80.3541666667,
       "wh_id": "1414",
+      "photos": [],
       "type_label": "案例"
     },
     {
@@ -3378,6 +3753,7 @@
       "lat": 23.0932777778,
       "lon": 102.7799805556,
       "wh_id": "1111",
+      "photos": [],
       "type_label": "案例"
     },
     {
@@ -3413,6 +3789,7 @@
       "lat": 42.358,
       "lon": 116.1851277778,
       "wh_id": "1389",
+      "photos": [],
       "type_label": "案例"
     },
     {
@@ -3448,6 +3825,7 @@
       "lat": 24.6688888889,
       "lon": 102.9772222222,
       "wh_id": "1388",
+      "photos": [],
       "type_label": "案例"
     },
     {
@@ -3483,6 +3861,7 @@
       "lat": 30.2375,
       "lon": 120.1408333333,
       "wh_id": "1334",
+      "photos": [],
       "type_label": "案例"
     },
     {
@@ -3518,6 +3897,7 @@
       "lat": 24.9652777778,
       "lon": 113.7033333333,
       "wh_id": "1335",
+      "photos": [],
       "type_label": "案例"
     },
     {
@@ -3553,6 +3933,7 @@
       "lat": 34.3997138889,
       "lon": 113.1412444444,
       "wh_id": "1305",
+      "photos": [],
       "type_label": "案例"
     },
     {
@@ -3588,6 +3969,7 @@
       "lat": 38.8822222222,
       "lon": 113.3494444444,
       "wh_id": "1279",
+      "photos": [],
       "type_label": "案例"
     },
     {
@@ -3623,6 +4005,7 @@
       "lat": 28.9158333333,
       "lon": 118.0644444444,
       "wh_id": "1292",
+      "photos": [],
       "type_label": "案例"
     },
     {
@@ -3658,6 +4041,7 @@
       "lat": 24.5508333333,
       "lon": 116.9002777778,
       "wh_id": "1113",
+      "photos": [],
       "type_label": "案例"
     },
     {
@@ -3693,6 +4077,7 @@
       "lat": 24.7177777778,
       "lon": 103.344166667,
       "wh_id": "1248",
+      "photos": [],
       "type_label": "案例"
     },
     {
@@ -3728,6 +4113,7 @@
       "lat": 22.258774,
       "lon": 112.525727,
       "wh_id": "1112",
+      "photos": [],
       "type_label": "案例"
     },
     {
@@ -3763,6 +4149,7 @@
       "lat": 30.8333333333,
       "lon": 103,
       "wh_id": "1213",
+      "photos": [],
       "type_label": "案例"
     },
     {
@@ -3798,6 +4185,7 @@
       "lat": 36.121978,
       "lon": 114.325162,
       "wh_id": "1114",
+      "photos": [],
       "type_label": "案例"
     },
     {
@@ -3833,6 +4221,7 @@
       "lat": 22.1911111111,
       "lon": 113.5363888889,
       "wh_id": "1110",
+      "photos": [],
       "type_label": "案例"
     },
     {
@@ -3868,6 +4257,7 @@
       "lat": 43.06666667,
       "lon": 11.55,
       "wh_id": "1026",
+      "photos": [],
       "type_label": "案例"
     },
     {
@@ -3903,6 +4293,7 @@
       "lat": 71.18888889,
       "lon": -179.7152778,
       "wh_id": "1023",
+      "photos": [],
       "type_label": "案例"
     },
     {
@@ -3938,6 +4329,7 @@
       "lat": -34.3558051153,
       "lon": 18.4750321846,
       "wh_id": "1007",
+      "photos": [],
       "type_label": "案例"
     },
     {
@@ -3973,6 +4365,7 @@
       "lat": 41.1387222222,
       "lon": 126.176194444,
       "wh_id": "1135",
+      "photos": [],
       "type_label": "案例"
     },
     {
@@ -4008,6 +4401,7 @@
       "lat": 27.895,
       "lon": 98.40638889,
       "wh_id": "1083",
+      "photos": [],
       "type_label": "案例"
     },
     {
@@ -4043,6 +4437,7 @@
       "lat": 36.7924166667,
       "lon": 14.7057222222,
       "wh_id": "1024",
+      "photos": [],
       "type_label": "案例"
     },
     {
@@ -4078,6 +4473,7 @@
       "lat": 60.60472,
       "lon": 15.63083,
       "wh_id": "1027",
+      "photos": [],
       "type_label": "案例"
     },
     {
@@ -4113,6 +4509,7 @@
       "lat": 41.96391667,
       "lon": 12.79625,
       "wh_id": "1025",
+      "photos": [],
       "type_label": "案例"
     },
     {
@@ -4148,6 +4545,7 @@
       "lat": 0.3297128643,
       "lon": 32.5542099716,
       "wh_id": "1022",
+      "photos": [],
       "type_label": "案例"
     },
     {
@@ -4183,6 +4581,7 @@
       "lat": -18.75,
       "lon": 21.73333333,
       "wh_id": "1021",
+      "photos": [],
       "type_label": "案例"
     },
     {
@@ -4218,6 +4617,7 @@
       "lat": -3.8579444444,
       "lon": -32.4251111111,
       "wh_id": "1000",
+      "photos": [],
       "type_label": "案例"
     },
     {
@@ -4253,6 +4653,7 @@
       "lat": 40.10972,
       "lon": 113.12222,
       "wh_id": "1039",
+      "photos": [],
       "type_label": "案例"
     },
     {
@@ -4288,6 +4689,7 @@
       "lat": 4,
       "lon": -56.5,
       "wh_id": "1017",
+      "photos": [],
       "type_label": "案例"
     },
     {
@@ -4323,6 +4725,7 @@
       "lat": -16.398353,
       "lon": -71.536777,
       "wh_id": "1016",
+      "photos": [],
       "type_label": "案例"
     },
     {
@@ -4358,6 +4761,7 @@
       "lat": 4.13333,
       "lon": 114.91667,
       "wh_id": "1013",
+      "photos": [],
       "type_label": "案例"
     },
     {
@@ -4393,6 +4797,7 @@
       "lat": 6.147,
       "lon": 116.642,
       "wh_id": "1012",
+      "photos": [],
       "type_label": "案例"
     },
     {
@@ -4428,6 +4833,7 @@
       "lat": 40.1586666667,
       "lon": 44.3246388889,
       "wh_id": "1011",
+      "photos": [],
       "type_label": "案例"
     },
     {
@@ -4463,6 +4869,7 @@
       "lat": 17.0166666667,
       "lon": 54.05,
       "wh_id": "1010",
+      "photos": [],
       "type_label": "案例"
     },
     {
@@ -4498,6 +4905,7 @@
       "lat": 50.60603,
       "lon": 3.38926,
       "wh_id": "1009",
+      "photos": [],
       "type_label": "案例"
     },
     {
@@ -4533,6 +4941,7 @@
       "lat": 20.011508,
       "lon": -75.630705,
       "wh_id": "1008",
+      "photos": [],
       "type_label": "案例"
     },
     {
@@ -4568,6 +4977,7 @@
       "lat": 50.4201134823,
       "lon": 3.9822689106,
       "wh_id": "1006",
+      "photos": [],
       "type_label": "案例"
     },
     {
@@ -4603,6 +5013,7 @@
       "lat": 50.8242222222,
       "lon": 4.3556666667,
       "wh_id": "1005",
+      "photos": [],
       "type_label": "案例"
     },
     {
@@ -4638,6 +5049,7 @@
       "lat": 31.0166666667,
       "lon": 112.65,
       "wh_id": "1004",
+      "photos": [],
       "type_label": "案例"
     },
     {
@@ -4673,6 +5085,7 @@
       "lat": 34.46666667,
       "lon": 112.4666667,
       "wh_id": "1003",
+      "photos": [],
       "type_label": "案例"
     },
     {
@@ -4708,6 +5121,7 @@
       "lat": 29.9044444444,
       "lon": 117.9875,
       "wh_id": "1002",
+      "photos": [],
       "type_label": "案例"
     },
     {
@@ -4743,6 +5157,7 @@
       "lat": 31.00167,
       "lon": 103.60528,
       "wh_id": "1001",
+      "photos": [],
       "type_label": "案例"
     },
     {
@@ -4778,6 +5193,7 @@
       "lat": 35.81844,
       "lon": 4.78684,
       "wh_id": "102",
+      "photos": [],
       "type_label": "案例"
     },
     {
@@ -4813,6 +5229,7 @@
       "lat": 43.133,
       "lon": 19.0166,
       "wh_id": "100",
+      "photos": [],
       "type_label": "案例"
     },
     {
@@ -4848,6 +5265,7 @@
       "lat": 11.10006,
       "lon": 40.57939,
       "wh_id": "10",
+      "photos": [],
       "type_label": "案例"
     },
     {
@@ -4883,6 +5301,7 @@
       "lat": -0.68986,
       "lon": -90.501319,
       "wh_id": "1",
+      "photos": [],
       "type_label": "案例"
     },
     {
@@ -4921,6 +5340,7 @@
       "lat": null,
       "lon": null,
       "wh_id": null,
+      "photos": [],
       "type_label": "政策"
     }
   ]

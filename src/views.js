@@ -90,13 +90,33 @@ function caseFigure(e, mode) {
   const loc = '/public/figures/' + e.slug + '.loc.svg';
   const altLoc = E(e.title) + ' 自绘区位示意图（示意资产，非现场照片）';
   const altInfo = E(e.title) + ' 自绘档案信息图（示意资产，非现场照片）';
+  const photos = (Array.isArray(e.photos) ? e.photos : []).filter(function (p) { return p && p.src; });
   if (mode === 'card') {
+    if (photos.length) {
+      const p0 = photos[0];
+      return '<figure class="card-fig card-fig-photo"><img src="' + E(p0.src) + '" alt="' + E(e.title) +
+        ' 现场照片（来源发布方）" loading="lazy"><figcaption>现场照片 · 来源：' +
+        E(e.source_name || '原发布方') + '</figcaption></figure>';
+    }
     const src = hasLoc ? loc : info;
     const cap = hasLoc ? '自绘区位示意图 · 示意资产，非现场照片'
       : '自绘档案信息图 · 示意资产，非现场照片';
     return '<figure class="card-fig"><img src="' + src + '" alt="' + altLoc +
       '" loading="lazy" width="720" height="500"><figcaption>' + cap +
       '</figcaption></figure>';
+  }
+  let photoSec = '';
+  if (photos.length) {
+    const items = photos.map(function (p, i) {
+      const cap = '现场照片 ' + (i + 1) + ' / ' + photos.length + ' · 来源：' + (e.source_name || '原发布方');
+      const link = p.orig ? '<a href="' + E(p.orig) + '" target="_blank" rel="noopener">原图链接</a>' : '';
+      return '<figure class="fig photo"><a href="' + E(p.orig || p.src) + '" target="_blank" rel="noopener">' +
+        '<img src="' + E(p.src) + '" alt="' + E(e.title) + ' 现场照片 ' + (i + 1) +
+        '" loading="lazy"></a><figcaption>' + E(cap) + (link ? ' · ' + link : '') + '</figcaption></figure>';
+    }).join('');
+    photoSec = '<section class="figs photos"><h2>现场照片</h2>' +
+      '<p class="fig-note">以下为来源发布方发布的现场照片，版权归原发布方/摄影者所有，本站仅作索引展示；点击可跳转原始链接。</p>' +
+      '<div class="photo-grid">' + items + '</div></section>';
   }
   const figs = [];
   if (hasLoc) {
@@ -108,7 +128,7 @@ function caseFigure(e, mode) {
   if (!hasLoc) {
     figs.push('<p class="fig-note">该案例未核验到《世界遗产名录》公布坐标，因此未生成区位示意图，也未在全球遗产地图上标注；本站不虚构坐标。</p>');
   }
-  return '<section class="figs"><h2>图示</h2>' + figs.join('') + '</section>';
+  return photoSec + '<section class="figs"><h2>图示</h2>' + figs.join('') + '</section>';
 }
 
 function card(e) {

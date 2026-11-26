@@ -1,5 +1,14 @@
   function figHtml(e) {
-    if (!e || e.type !== 'case' || !e.fig || !e.fig.info) return '';
+    if (!e || e.type !== 'case') return '';
+    var ps = (e.photos || []).filter(function (p) { return p && p.src; });
+    if (ps.length) {
+      var p0 = ps[0];
+      return '@LT@figure class=@Q@card-fig card-fig-photo@Q@@GT@@LT@img src=@Q@' + p0.src +
+        '@Q@ alt=@Q@' + E(e.title) + ' 现场照片（来源发布方）@Q@ loading=@Q@lazy@Q@@GT@' +
+        '@LT@figcaption@GT@现场照片 · 来源：' + E(e.source_name || '原发布方') +
+        '@LT@/figcaption@GT@@LT@/figure@GT@';
+    }
+    if (!e.fig || !e.fig.info) return '';
     var loc = e.fig.loc;
     var kind = loc ? '自绘区位示意图' : '自绘档案信息图';
     return '@LT@figure class=@Q@card-fig@Q@@GT@@LT@img src=@Q@' + (loc || e.fig.info) +

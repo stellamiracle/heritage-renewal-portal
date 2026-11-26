@@ -31,6 +31,7 @@ CREATE TABLE IF NOT EXISTS entries (
   source_name TEXT DEFAULT '',
   source_url TEXT DEFAULT '',
   attachments TEXT DEFAULT '[]',
+  photos TEXT DEFAULT '[]',
   featured INTEGER DEFAULT 0,
   visibility TEXT DEFAULT 'public',
   author TEXT DEFAULT '',
@@ -59,6 +60,8 @@ CREATE INDEX IF NOT EXISTS idx_inbox_status ON inbox(status);
   if (cols.indexOf('lat') < 0) db.exec('ALTER TABLE entries ADD COLUMN lat REAL');
   if (cols.indexOf('lon') < 0) db.exec('ALTER TABLE entries ADD COLUMN lon REAL');
   if (cols.indexOf('wh_id') < 0) db.exec('ALTER TABLE entries ADD COLUMN wh_id TEXT');
+  /* 案例现场照片字段：来源发布方原图索引，JSON 数组，只增不改 */
+  if (cols.indexOf('photos') < 0) db.exec("ALTER TABLE entries ADD COLUMN photos TEXT DEFAULT '[]'");
 })();
 
 const nowISO = () => new Date().toISOString();
@@ -82,6 +85,7 @@ function rowToEntry(r) {
     themes: pj(r.themes),
     tags: pj(r.tags),
     attachments: pj(r.attachments),
+    photos: pj(r.photos),
     featured: !!r.featured,
     type_label: TYPE_LABEL[r.type] || r.type,
   };
@@ -143,7 +147,7 @@ function upsertEntry(data, id = null) {
     status: data.status || '现行有效', themes: j(data.themes), tags: j(data.tags),
     summary: data.summary || '', body: data.body || '',
     source_name: data.source_name || '', source_url: data.source_url || '',
-    attachments: j(data.attachments), featured: b(data.featured),
+    attachments: j(data.attachments), photos: j(data.photos), featured: b(data.featured),
     visibility: data.visibility || 'public', author: data.author || '',
     lat: data.lat == null || data.lat === '' ? null : Number(data.lat),
     lon: data.lon == null || data.lon === '' ? null : Number(data.lon),
@@ -152,24 +156,24 @@ function upsertEntry(data, id = null) {
   if (id) {
     db.prepare(`UPDATE entries SET slug=?, type=?, title=?, doc_no=?, issuer=?, level=?, region=?,
       publish_date=?, effective_date=?, status=?, themes=?, tags=?, summary=?, body=?,
-      source_name=?, source_url=?, attachments=?, featured=?, visibility=?, author=?,
+      source_name=?, source_url=?, attachments=?, photos=?, featured=?, visibility=?, author=?,
       lat=?, lon=?, wh_id=?, updated_at=?
       WHERE id=?`).run(
       payload.slug, payload.type, payload.title, payload.doc_no, payload.issuer, payload.level,
       payload.region, payload.publish_date, payload.effective_date, payload.status, payload.themes,
       payload.tags, payload.summary, payload.body, payload.source_name, payload.source_url,
-      payload.attachments, payload.featured, payload.visibility, payload.author,
+      payload.attachments, payload.photos, payload.featured, payload.visibility, payload.author,
       payload.lat, payload.lon, payload.wh_id, ts, id);
     return getEntry(id);
   }
   const st = db.prepare(`INSERT INTO entries (slug,type,title,doc_no,issuer,level,region,publish_date,
-    effective_date,status,themes,tags,summary,body,source_name,source_url,attachments,featured,
+    effective_date,status,themes,tags,summary,body,source_name,source_url,attachments,photos,featured,
     visibility,author,lat,lon,wh_id,created_at,updated_at)
-    VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`);
+    VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`);
   const info = st.run(payload.slug, payload.type, payload.title, payload.doc_no, payload.issuer,
     payload.level, payload.region, payload.publish_date, payload.effective_date, payload.status,
     payload.themes, payload.tags, payload.summary, payload.body, payload.source_name, payload.source_url,
-    payload.attachments, payload.featured, payload.visibility, payload.author,
+    payload.attachments, payload.photos, payload.featured, payload.visibility, payload.author,
     payload.lat, payload.lon, payload.wh_id, ts, ts);
   return getEntry(Number(info.lastInsertRowid));
 }

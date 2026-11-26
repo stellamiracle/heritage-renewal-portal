@@ -203,6 +203,8 @@ function main() {
     path.join(DIST, 'public', 'events.js'));
   /* 案例自绘图示资产：loc 区位示意图 + info 档案信息图 */
   copyTree(path.join(BASE, 'public', 'figures'), path.join(DIST, 'public', 'figures'));
+  /* 案例现场照片：来源发布方原图索引（public/photos/<slug>/NN.jpg） */
+  copyTree(path.join(BASE, 'public', 'photos'), path.join(DIST, 'public', 'photos'));
   write('robots.txt', 'User-agent: *' + String.fromCharCode(10) +
     'Allow: /' + String.fromCharCode(10));
   console.log('static build done: pages=' + pages +

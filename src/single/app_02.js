@@ -108,6 +108,24 @@
         E(r.title) + '@LT@/a@GT@@LT@span@GT@' + E(r.publish_date || '') +
         '@LT@/span@GT@@LT@/li@GT@';
     }).join('');
+    var photoSec = '';
+    var ps = (e.photos || []).filter(function (p) { return p && p.src; });
+    if (ps.length) {
+      var items = ps.map(function (p, i) {
+        var cap = '现场照片 ' + (i + 1) + ' / ' + ps.length + ' · 来源：' + (e.source_name || '原发布方');
+        var link = p.orig ? '@LT@a href=@Q@' + E(p.orig) +
+          '@Q@ target=@Q@_blank@Q@ rel=@Q@noopener@Q@@GT@原图链接@LT@/a@GT@' : '';
+        return '@LT@figure class=@Q@fig photo@Q@@GT@@LT@a href=@Q@' + E(p.orig || p.src) +
+          '@Q@ target=@Q@_blank@Q@ rel=@Q@noopener@Q@@GT@@LT@img src=@Q@' + p.src +
+          '@Q@ alt=@Q@' + E(e.title) + ' 现场照片 ' + (i + 1) +
+          '@Q@ loading=@Q@lazy@Q@@GT@@LT@/img@GT@@LT@/a@GT@' +
+          '@LT@figcaption@GT@' + cap + (link ? ' · ' + link : '') +
+          '@LT@/figcaption@GT@@LT@/figure@GT@';
+      }).join('');
+      photoSec = '@LT@section class=@Q@figs photos@Q@@GT@@LT@h2@GT@现场照片@LT@/h2@GT@' +
+        '@LT@p class=@Q@fig-note@Q@@GT@以下为来源发布方发布的现场照片，版权归原发布方/摄影者所有，本站仅作索引展示；点击可跳转原始链接。@LT@/p@GT@' +
+        '@LT@div class=@Q@photo-grid@Q@@GT@' + items + '@LT@/div@GT@@LT@/section@GT@';
+    }
     var figs = '';
     if (e.fig && e.fig.info) {
       figs = '@LT@section class=@Q@figs@Q@@GT@@LT@h2@GT@图示@LT@/h2@GT@';
@@ -135,6 +153,7 @@
       (rows.length ? '@LT@dl class=@Q@kvs@Q@@GT@' + rows.join('') + '@LT@/dl@GT@' : '') +
       (chips ? '@LT@p class=@Q@chips@Q@@GT@' + chips + '@LT@/p@GT@' : '') +
       (e.summary ? '@LT@p class=@Q@lead@Q@@GT@' + E(e.summary) + '@LT@/p@GT@' : '') +
+      photoSec +
       figs +
       '@LT@div class=@Q@prose@Q@@GT@' + (e.bodyHtml || '') + '@LT@/div@GT@' +
       (files ? '@LT@section class=@Q@files@Q@@GT@@LT@h2@GT@附件@LT@/h2@GT@@LT@ul@GT@' +

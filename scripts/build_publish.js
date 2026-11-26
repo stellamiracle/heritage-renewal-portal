@@ -38,6 +38,8 @@ function walk(dir, depth) {
 }
 rmrf(PUB);
 copyTree(path.join(B, 'dist'), PUB);
+// Pages 跳过 Jekyll 处理：每次重建后必须补回 .nojekyll（否则路径型资源 404）
+fs.writeFileSync(path.join(PUB, '.nojekyll'), '', 'utf8');
 walk(PUB, 0);
 const singles = fs.readdirSync(path.join(B, 'dist-single'))
   .filter(function (n) { return /[.]html$/.test(n); }).sort();

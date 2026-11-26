@@ -91,6 +91,13 @@
   }
   function caseFig(e) {
     if (!e || e.type !== 'case' || !e.slug) return '';
+    var ps = (e.photos || []).filter(function (p) { return p && p.src; });
+    if (ps.length) {
+      var p0 = ps[0];
+      return '<figure class="card-fig card-fig-photo"><img src="../' + String(p0.src).replace(/^\//, '') +
+        '" alt="' + esc(e.title) + ' 现场照片（来源发布方）" loading="lazy"><figcaption>现场照片 · 来源：' +
+        esc(e.source_name || '原发布方') + '</figcaption></figure>';
+    }
     var hasLoc = e.lat !== null && e.lat !== undefined && e.lat !== '' &&
       e.lon !== null && e.lon !== undefined && e.lon !== '';
     var kind = hasLoc ? '自绘区位示意图' : '自绘档案信息图';
