@@ -428,6 +428,7 @@ function detailPage(d) {
   '<dl class="kvs">' + rows.join('') + '</dl>',
   (chips && e.type !== 'case' ? '<p class="chips">' + chips + '</p>' : ''),
   (e.summary ? '<p class="lead">' + E(e.summary) + '</p>' : ''),
+  '<p class="muted"><a href="/browse">← 返回检索</a></p>',
   caseFigure(e, 'detail'),
   '<div class="prose">' + md.render(e.body || '') + '</div>',
   (files ? '<section class="files"><h2>附件</h2><ul>' + files + '</ul></section>' : ''),
