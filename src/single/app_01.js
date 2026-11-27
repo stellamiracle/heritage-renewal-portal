@@ -10,11 +10,32 @@
     }
     return '';
   }
-  function cardHtml(e) {
+  function cardHtml(e, compact) {
     var meta = [E(e.issuer || ''), E(e.doc_no || '')].filter(Boolean).join(' · ');
     var theme = (e.themes || []).slice(0, 3).map(function (t) {
       return '@LT@span class=@Q@chip@Q@@GT@' + E(t) + '@LT@/span@GT@';
     }).join('');
+    if (compact && e.type === 'case') {
+      var region = e.region ? '@LT@span class=@Q@cm-region@Q@@GT@' + E(e.region) + '@LT@/span@GT@' : '';
+      var kind = (e.themes || [])[0] ? '@LT@span class=@Q@cm-kind@Q@@GT@' + E(e.themes[0]) + '@LT@/span@GT@' : '';
+      var stc = { '现行有效': 'st-valid', '失效': 'st-void', '已废止': 'st-void', '已失效': 'st-void', '废止': 'st-void', '实施中': 'st-running', '动态': 'st-dyn', '实践报道': 'st-report', '入选典型案例': 'st-case' };
+      var st = e.status ? '@LT@span class=@Q@badge ' + (stc[e.status] || 'st-other') + '@Q@@GT@' + E(e.status) + '@LT@/span@GT@' : '';
+      var dt = e.publish_date ? '@LT@time@GT@' + E(e.publish_date) + '@LT@/time@GT@' : '';
+      var sr = e.source_name ? '@LT@p class=@Q@src@Q@@GT@来源：' + E(e.source_name) + '@LT@/p@GT@' : '';
+      var figC = figHtml(e) || '@LT@div class=@Q@card-nofig@Q@@GT@暂无现场照片@LT@/div@GT@';
+      return '@LT@article class=@Q@card card-case@Q@@GT@' +
+        figC +
+        '@LT@div class=@Q@card-top@Q@@GT@@LT@span class=@Q@tag tag-' + E(e.type) +
+        '@Q@@GT@' + E(e.type_label || typeLabel(e.type)) + '@LT@/span@GT@' +
+        region + kind +
+        '@LT@/div@GT@' +
+        '@LT@div class=@Q@cm-meta@Q@@GT@' + st + dt + '@LT@/div@GT@' +
+        '@LT@h3@GT@@LT@a href=@Q@' + href('/entry/' + e.slug) + '@Q@@GT@' +
+        E(e.title) + '@LT@/a@GT@@LT@/h3@GT@' +
+        '@LT@p class=@Q@summary@Q@@GT@' + E(e.summary || '') + '@LT@/p@GT@' +
+        sr +
+        '@LT@/article@GT@';
+    }
     return '@LT@article class=@Q@card@Q@@GT@' +
       figHtml(e) +
       '@LT@div class=@Q@card-top@Q@@GT@@LT@span class=@Q@tag tag-' + E(e.type) +
@@ -39,7 +60,7 @@
         '@LT@span class=@Q@cat-desc@Q@@GT@' + t[2] + '@LT@/span@GT@' +
         '@LT@/a@GT@';
     }).join('');
-    var hot = entries.slice(0, 8).map(cardHtml).join('');
+    var hot = entries.slice(0, 8).map(function (x) { return cardHtml(x); }).join('');
     return '@LT@section class=@Q@hero@Q@@GT@' +
       '@LT@h1@GT@遗产保护与城市更新@LT@br@GT@@LT@span@GT@专题资料库@LT@/span@GT@@LT@/h1@GT@' +
       '@LT@p class=@Q@lede@Q@@GT@汇集法规、政策、案例与动态四大板块，收录中央与地方公开发布的官方文本，标注发布机关、发布日期与原文链接，可按地区、层级、主题与时间筛选检索。@LT@/p@GT@' +

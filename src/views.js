@@ -39,7 +39,7 @@ function layout(o) {
   '<meta property="og:description" content="' + E(desc) + '">',
   '<link rel="stylesheet" href="/public/style.css">',
   o.head || '',
-  '</head><body>',
+  '</head><body' + (o.bodyClass ? ' class="' + o.bodyClass + '"' : '') + '>',
   '<div class="topbar"><div class="wrap">',
   '<span class="en">HERITAGE &amp; URBAN RENEWAL OBSERVATORY</span>',
   '<span class="meta">已公开条目 ' + (o.total == null ? 0 : o.total) + ' 条 · 数据更新 ' + E(o.updated || '') + '</span>',
@@ -109,11 +109,30 @@ function caseFigure(e, mode) {
   return mode === 'card' ? '' : photoSec;
 }
 
-function card(e) {
+function card(e, compact) {
   const meta = [E(e.issuer || ''), e.doc_no ? E(e.doc_no) : ''].filter(Boolean).join(' · ');
   const theme = (e.themes || []).slice(0, 3).map(function (t) { return '<span class="chip">' + E(t) + '</span>'; }).join('');
   const src = e.source_name ? '<p class="src">来源：' + E(e.source_name) + '</p>' : '';
   const fig = caseFigure(e, 'card');
+  if (compact && e.type === 'case') {
+    const region = e.region ? '<span class="cm-region">' + E(e.region) + '</span>' : '';
+    const kind = (e.themes || [])[0] ? '<span class="cm-kind">' + E(e.themes[0]) + '</span>' : '';
+    const figC = fig || '<div class="card-nofig">暂无现场照片</div>';
+    return [
+      '<article class="card card-case">',
+      figC,
+      '<div class="card-top"><span class="tag tag-' + E(e.type) + '">' + E(e.type_label) + '</span>',
+      region,
+      kind, '</div>',
+      '<div class="cm-meta">',
+      statusBadge(e.status),
+      (e.publish_date ? '<time>' + E(e.publish_date) + '</time>' : ''), '</div>',
+      '<h3><a href="/entry/' + E(e.slug) + '">' + E(e.title) + '</a></h3>',
+      '<p class="summary">' + E(e.summary || '') + '</p>',
+      src,
+      '</article>',
+    ].join('');
+  }
   return [
   '<article class="card">',
   fig,
@@ -193,7 +212,7 @@ function homePage(d) {
       '<span class="cat-name">' + x[1] + '</span>' +
       '<span class="cat-desc">' + x[2] + '</span></a>';
   }).join('');
-  const hot = (d.hot || []).map(card).join('');
+  const hot = (d.hot || []).map(function (x) { return card(x); }).join('');
   const mods = MODULES.map(function (m, i) {
     const no = ('0' + (i + 1)).slice(-2);
     const cnt = m.countKey === 'event'
@@ -319,7 +338,8 @@ function browsePage(d) {
   '<a class="btn btn-ghost" href="/browse">重置</a>',
   '</form>',
   ].join(NL);
-  const list = (d.entries || []).map(card).join('');
+  const isCase = q.type === 'case';
+  const list = (d.entries || []).map(function (x) { return card(x, isCase); }).join('');
   const tc = d.themeCounts || {};
   const topThemes = Object.keys(tc).sort(function (a, b) { return tc[b] - tc[a]; }).slice(0, 18);
   const themeCloud = topThemes.map(function (t) {
@@ -332,7 +352,7 @@ function browsePage(d) {
   '<p class="muted">共 ' + (d.total || 0) + ' 条' + (q.q ? '，关键词「' + E(q.q) + '」' : '') + '</p></div>',
   '<div class="tabs">' + tabHtml + '</div>',
   form,
-  '<div class="grid grid-list">' + (list || '<p class="empty">没有符合条件的条目，请调整筛选条件。</p>') + '</div>',
+  '<div class="grid grid-list' + (isCase ? ' is-cases' : '') + '">' + (list || '<p class="empty">没有符合条件的条目，请调整筛选条件。</p>') + '</div>',
   pager(q, d.total || 0, d.page || 1, d.per || 20),
   '<section class="cloud-sec">',
   '<h2 class="section-title"><span class="sec-no">·</span>热门主题</h2>',
@@ -349,7 +369,7 @@ function browsePage(d) {
   '</ul>',
   '</section>',
   ].join(NL);
-  return layout({ title: '资料检索 · 遗产保护与城市更新观察平台', body: body, current: 'browse', total: d.total, updated: d.updated });
+  return layout({ title: '资料检索 · 遗产保护与城市更新观察平台', body: body, current: 'browse', total: d.total, updated: d.updated, bodyClass: isCase ? 'is-case' : '' });
 }
 
 function detailPage(d) {

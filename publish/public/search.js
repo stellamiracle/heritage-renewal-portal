@@ -100,7 +100,7 @@
     }
     return '';
   }
-  function card(e, kw) {
+  function card(e, kw, compact) {
     var label = TYPE_LABEL[e.type] || e.type;
     var url = '../entry/' + (e.slug || e.id) + '.html';
     var chips = (e.themes || []).slice(0, 4).map(function (t) {
@@ -111,6 +111,18 @@
       ? '<span class="badge ' + (STATUS_CLASS[e.status] || 'st-other') + '">' + esc(e.status) + '</span>'
       : '';
     var src = e.source_name ? '<p class="src">来源：' + esc(e.source_name) + '</p>' : '';
+    if (compact && e.type === 'case') {
+      var region = e.region ? '<span class="cm-region">' + hl(e.region, kw) + '</span>' : '';
+      var kind = (e.themes || [])[0] ? '<span class="cm-kind">' + hl(e.themes[0], kw) + '</span>' : '';
+      var figC = caseFig(e) || '<div class="card-nofig">暂无现场照片</div>';
+      return '<article class="card card-case">' + figC +
+        '<div class="card-top"><span class="tag tag-' + esc(e.type) + '">' + esc(label) + '</span>' +
+        region + kind + '</div>' +
+        '<div class="cm-meta">' + badge + '<time>' + esc(e.publish_date || '') + '</time></div>' +
+        '<h3><a href="' + url + '">' + hl(e.title, kw) + '</a></h3>' +
+        '<p class="summary">' + hl(e.summary || '', kw) + '</p>' +
+        src + '</article>';
+    }
     return '<article class="card">' + caseFig(e) + '<div class="card-top"><span class="tag tag-' + esc(e.type) + '">' + esc(label) +
       '</span>' + badge + '<time>' + esc(e.publish_date || '') + '</time></div>' +
       '<h3><a href="' + url + '">' + hl(e.title, kw) + '</a></h3>' +
@@ -128,6 +140,9 @@
     if (!form || !grid) return;
     var p = parseQuery();
     var kw = (p.q || '').trim();
+    var compact = p.type === 'case';
+    if (compact && document.body) document.body.classList.add('is-case');
+    if (compact && grid) grid.classList.add('is-cases');
     var dataUrl = new URL('../data/entries.json', location.href).toString();
     fetch(dataUrl).then(function (r) { return r.json(); }).then(function (data) {
       var list = (data && data.entries) || [];
@@ -147,7 +162,7 @@
         if (sort === 'updated') return String(b.updated_at || '').localeCompare(String(a.updated_at || ''));
         return String(b.publish_date || '').localeCompare(String(a.publish_date || ''));
       });
-      grid.innerHTML = out.length ? out.map(function (e) { return card(e, kw); }).join('')
+      grid.innerHTML = out.length ? out.map(function (e) { return card(e, kw, compact); }).join('')
         : '<p class="muted">没有符合条件的条目。可减少筛选条件，或换用关键词检索。</p>';
       var head = document.querySelector('.result-head p.muted');
       if (head) {

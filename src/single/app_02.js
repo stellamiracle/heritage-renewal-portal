@@ -7,7 +7,12 @@
     if (!(page >= 1)) page = 1;
     if (page > pages) page = pages;
     var slice = list.slice((page - 1) * per, page * per);
-    var cards = slice.map(cardHtml).join('');
+    var compact = q.type === 'case';
+    if (typeof document !== 'undefined' && document.body) {
+      if (compact) document.body.classList.add('is-case');
+      else document.body.classList.remove('is-case');
+    }
+    var cards = slice.map(function (x) { return cardHtml(x, compact); }).join('');
     var tabs = TYPES.map(function (t) {
       var nt = merge(q, { page: '' });
       if (q.type === t[0]) nt.type = '';
@@ -52,7 +57,7 @@
       (q.q ? ' · 关键词：' + E(q.q) : '') + '@LT@/p@GT@' +
       '@LT@p class=@Q@muted@Q@@GT@第 ' + page + ' / ' + pages + ' 页@LT@/p@GT@' +
       '@LT@/div@GT@';
-    var body = cards ? '@LT@div class=@Q@grid@Q@@GT@' + cards + '@LT@/div@GT@'
+    var body = cards ? '@LT@div class=@Q@grid' + (compact ? ' is-cases' : '') + '@Q@@GT@' + cards + '@LT@/div@GT@'
       : '@LT@p class=@Q@empty@Q@@GT@没有符合条件的条目，请调整筛选条件。@LT@/p@GT@';
     return '@LT@section@GT@@LT@h1 class=@Q@page-title@Q@@GT@资料检索@LT@/h1@GT@' +
       '@LT@div class=@Q@tabs@Q@@GT@' + tabs + '@LT@/div@GT@' +
@@ -175,6 +180,7 @@
     var r = parseHash();
     var act = 'home';
     var html = '';
+    if (document.body) document.body.classList.remove('is-case');
     if (r.path.indexOf('/entry/') === 0) {
       html = detailHtml(r.path.slice(7));
       act = 'browse';

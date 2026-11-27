@@ -774,7 +774,7 @@ main h1 { font-size: 30px; margin: 30px 0 18px; font-family: var(--serif); }
 .badge.ev-type { background: #e9edf3; color: #1f3a5f; border-color: #ccd6e3; font-weight: 700; }
 
 
-/* 案例现场照片图集：与自绘示意图分区呈现，两列自适应网格 */
+/* 案例现场照片图集：两列自适应网格 */
 .figs.photos .photo-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 14px; }
 .figs.photos .photo { margin: 0; }
 .figs.photos .photo a { display: block; }
@@ -784,3 +784,127 @@ main h1 { font-size: 30px; margin: 30px 0 18px; font-family: var(--serif); }
 @media (max-width: 640px) {
   .figs.photos .photo-grid { grid-template-columns: 1fr; }
 }
+/* ---------- 案例浏览：紧凑卡片网格（2026-11-27） ---------- */
+/* 桌面 3 列 / 宽屏 4 列；主内容最大 1440px；卡片统一 260-310px，1080p 可完整显示两行 */
+/* 图片：桌面 96px 等高图带（object-fit:cover，零变形）；<=720px 恢复真 5:3 */
+/* 文本：h3 与摘要固定 2lh 硬切 + 底部渐隐遮罩（Edge 156 的 line-clamp 不渲染省略号） */
+body.is-case main.wrap { max-width: 1440px; }
+.is-cases {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+  grid-auto-rows: 1fr;
+  align-items: stretch;
+}
+.is-cases .card-case { padding: 9px 12px 10px; }
+.is-cases .card-case .card-fig { margin: 0 0 4px; }
+.is-cases .card-case .card-fig img {
+  width: 100%;
+  height: 96px;
+  object-fit: cover;
+}
+.is-cases .card-case .card-fig figcaption {
+  margin-top: 3px;
+  font-size: 10.5px;
+  line-height: 1.45;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.is-cases .card-case .card-top {
+  gap: 5px;
+  font-size: 11px;
+  line-height: 1.4;
+  flex-wrap: nowrap;
+  min-width: 0;
+}
+.is-cases .card-case .card-top .tag { flex: 0 0 auto; }
+.is-cases .card-case .cm-region,
+.is-cases .card-case .cm-kind {
+  flex: 0 1 auto;
+  min-width: 0;
+  max-width: 44%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.is-cases .card-case h3 {
+  margin: 5px 0 3px;
+  font-size: 14.5px;
+  line-height: 1.4;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  height: 2lh;
+  max-height: 2lh;
+  overflow: hidden;
+  -webkit-mask-image: linear-gradient(to bottom, #000 calc(100% - 8px), transparent 100%);
+  mask-image: linear-gradient(to bottom, #000 calc(100% - 8px), transparent 100%);
+}
+.is-cases .card-case .summary {
+  font-size: 12px;
+  line-height: 1.55;
+  margin: 0;
+  flex: 0 0 auto;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  height: 2lh;
+  max-height: 2lh;
+  overflow: hidden;
+  -webkit-mask-image: linear-gradient(to bottom, #000 calc(100% - 8px), transparent 100%);
+  mask-image: linear-gradient(to bottom, #000 calc(100% - 8px), transparent 100%);
+}
+.is-cases .card-case .src {
+  margin: auto 0 0;
+  padding-top: 3px;
+  font-size: 11px;
+  line-height: 1.5;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.is-cases .card-case .cm-meta {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin: 3px 0 0;
+  font-size: 10.5px;
+  line-height: 1.5;
+  color: var(--muted-2);
+  min-width: 0;
+}
+.is-cases .card-case .cm-meta .badge {
+  max-width: 62%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 10.5px;
+}
+.is-cases .card-case .cm-meta time { margin-left: auto; flex: 0 0 auto; }
+.is-cases .card-case .card-nofig {
+  height: 96px;
+  margin: 0 0 22px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  background: var(--paper-2);
+  color: var(--muted-2);
+  font-size: 11.5px;
+  letter-spacing: .06em;
+}
+@media (min-width: 1700px) {
+  .is-cases { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+}
+@media (max-width: 1100px) {
+  .is-cases { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 720px) {
+  .is-cases { grid-template-columns: 1fr; grid-auto-rows: auto; }
+  .is-cases .card-case h3 { -webkit-line-clamp: 3; height: auto; max-height: 3lh; -webkit-mask-image: none; mask-image: none; }
+  .is-cases .card-case .summary { -webkit-line-clamp: 4; height: auto; max-height: 4lh; -webkit-mask-image: none; mask-image: none; }
+  .is-cases .card-case .card-fig img { height: auto; aspect-ratio: 5 / 3; max-height: none; }
+  .is-cases .card-case .card-nofig { height: auto; aspect-ratio: 5 / 3; margin: 0 0 4px; }
+}
+
